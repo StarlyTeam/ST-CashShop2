@@ -10,22 +10,6 @@ softdepend:
 
 version: 1.0
 api-version: 1.13
-
-
-  // 캐시상점 상인[npc] 상점[name] - n 초 이내로 우클릭 한 npc 이름 등록
-  // 캐시상점 생성[create] 상점[name] - 캐시상점을 생성합니다.
-  // 캐시상점 삭제[remove] 상점[name] - 캐시상점을 삭제합니다.
-  // 캐시상점 편집[edit] 상점[name] - 캐시상점 설정 setting gui open
-  // 캐시상점 목록[list] - 생성 된 캐시상점 목록을 확인합니다.
-  // 캐시상점 열기[open] - 캐시상점 열기 shop gui open
-
-  // 캐시 - 캐시 확인
-  // 캐시 확인[info] 닉네임[player] - 해당 유저의 캐시를 확인
-  // 캐시 지급[add] 닉네임[player] 금액[amount] - 해당 유저에게 amount 캐시 지급
-  // 캐시 차감[sub] 닉네임[player] 금액[amount] - 해당 유저의 캐시를 amount 만큼 차감
-  // 캐시 설정[set] 닉네임[player] 금액[amount] - 해당 유저의 캐시를 amount 로 설정
-  // 캐시 초기화[reset] 닉네임[player] - 해당 유저의 캐시를 초기화
-
 permissions:
   starly.cashshop.npc:
     description: npc command
