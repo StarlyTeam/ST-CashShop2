@@ -5,7 +5,7 @@ import net.starly.cashshop.command.executor.CashCommand;
 import net.starly.cashshop.command.executor.CashShopCommand;
 import net.starly.cashshop.database.ConnectionPoolManager;
 import net.starly.cashshop.database.DatabaseContext;
-import net.starly.cashshop.database.executor.AsyncExecutors;
+import net.starly.cashshop.util.schedule.AsyncExecutors;
 import net.starly.cashshop.message.MessageLoader;
 import net.starly.cashshop.repo.player.PlayerCashRepository;
 import net.starly.cashshop.repo.player.impl.SQLPlayerCashRepositoryImpl;
@@ -48,13 +48,12 @@ public class CashShopMain extends JavaPlugin {
 
         // COMMAND
         new CashCommand(this, "cash");
-        new CashShopCommand(this, "net/starly/cashshop");
+        new CashShopCommand(this, "cashshop");
 
         // EVENT
 
         // INITIALIZING
         loadConfiguration(false);
-
     }
 
     public void loadConfiguration() { loadConfiguration(true); }
@@ -69,6 +68,7 @@ public class CashShopMain extends JavaPlugin {
         cashShopRepository = new EmptyCashShopRepositoryImpl();
         if(stConfig.getBoolean("database.use")) playerCashRepository = new SQLPlayerCashRepositoryImpl();
         else playerCashRepository = new YamlPlayerCashRepositoryImpl();
+
         playerCashRepository.initializing(stConfig);
     }
 
@@ -76,6 +76,7 @@ public class CashShopMain extends JavaPlugin {
     public void onDisable() {
         AsyncExecutors.shutdown();
         ConnectionPoolManager pool = ConnectionPoolManager.getInternalPool();
+        playerCashRepository.close();
         if(pool != null) pool.closePool();
     }
 

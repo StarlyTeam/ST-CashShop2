@@ -3,7 +3,7 @@ package net.starly.cashshop.command.executor.sub;
 import net.starly.cashshop.CashShopMain;
 import net.starly.cashshop.cash.PlayerCash;
 import net.starly.cashshop.command.STSubCommand;
-import net.starly.cashshop.database.executor.AsyncExecutors;
+import net.starly.cashshop.util.schedule.AsyncExecutors;
 import net.starly.cashshop.message.MessageContext;
 import net.starly.cashshop.message.impl.CashMessageContextImpl;
 import net.starly.cashshop.util.Replacer;
@@ -42,7 +42,6 @@ public class CashSubCommands {
             context.get(MessageContext.Type.ERROR, "notNumber").send(sender);
             return;
         }
-        System.out.println(args[0]);
         Player target = plugin.getServer().getPlayer(args[0]);
         if(target == null) {
             AsyncExecutors.run(()-> {

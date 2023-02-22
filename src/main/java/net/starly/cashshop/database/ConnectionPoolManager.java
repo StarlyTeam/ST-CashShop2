@@ -3,7 +3,7 @@ package net.starly.cashshop.database;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Setter;
-import net.starly.cashshop.database.executor.AsyncExecutors;
+import net.starly.cashshop.util.schedule.AsyncExecutors;
 import net.starly.core.data.Config;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
