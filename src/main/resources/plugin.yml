@@ -1,9 +1,9 @@
-name: ST-BoilerPlate # TODO: 수정
-main: net.starly.boilerplate.BoilerPlateMain # TODO: 수정
+name: ST-CashShop
+main: net.starly.cashshop.CashShopMain
 author: Starly Team
 website: http://starly.kr/discord
 
-description: BoilerPlate Plugin. # TODO: 수정
+description: CashShop Plugin.
 
 softdepend:
   - ST-Core
@@ -11,4 +11,49 @@ softdepend:
 version: 1.0
 api-version: 1.13
 
+
+  // 캐시상점 상인[npc] 상점[name] - n 초 이내로 우클릭 한 npc 이름 등록
+  // 캐시상점 생성[create] 상점[name] - 캐시상점을 생성합니다.
+  // 캐시상점 삭제[remove] 상점[name] - 캐시상점을 삭제합니다.
+  // 캐시상점 편집[edit] 상점[name] - 캐시상점 설정 setting gui open
+  // 캐시상점 목록[list] - 생성 된 캐시상점 목록을 확인합니다.
+  // 캐시상점 열기[open] - 캐시상점 열기 shop gui open
+
+  // 캐시 - 캐시 확인
+  // 캐시 확인[info] 닉네임[player] - 해당 유저의 캐시를 확인
+  // 캐시 지급[add] 닉네임[player] 금액[amount] - 해당 유저에게 amount 캐시 지급
+  // 캐시 차감[sub] 닉네임[player] 금액[amount] - 해당 유저의 캐시를 amount 만큼 차감
+  // 캐시 설정[set] 닉네임[player] 금액[amount] - 해당 유저의 캐시를 amount 로 설정
+  // 캐시 초기화[reset] 닉네임[player] - 해당 유저의 캐시를 초기화
+
+permissions:
+  starly.cashshop.npc:
+    description: npc command
+  starly.cashshop.create:
+    description: create command
+  starly.cashshop.remove:
+    description: remove command
+  starly.cashshop.edit:
+    description: edit command
+  starly.cashshop.list:
+    description: list command
+  starly.cashshop.open:
+    description: open command
+  starly.cashshop.info:
+    description: info command
+  starly.cashshop.add:
+    description: add command
+  starly.cashshop.sub:
+    description: sub command
+  starly.cashshop.set:
+    description: set command
+  starly.cashshop.reset:
+    description: reset command
+  starly.cashshop.reload:
+    description: reload command
+
 commands:
+  cash:
+    aliases: [캐시]
+  cashshop:
+    aliases: [캐시상점]

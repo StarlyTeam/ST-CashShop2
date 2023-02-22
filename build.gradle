@@ -1,8 +1,10 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-group 'net.starly.boilerplate' // TODO: 수정
+group 'net.starly.cashshop'
 version '1.0'
 
 repositories {
@@ -22,8 +24,19 @@ dependencies {
 
     // OTHER DEPENDENCIES
     compileOnly "net.starly.core:ST-Core:1.6.2"
+
+    // LOMBOK
+    compileOnly "org.projectlombok:lombok:1.18.26"
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    // HIKARI_CP
+    api group: 'com.zaxxer', name: 'HikariCP', version: '3.4.5'
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+jar {
+    finalizedBy shadowJar
 }
