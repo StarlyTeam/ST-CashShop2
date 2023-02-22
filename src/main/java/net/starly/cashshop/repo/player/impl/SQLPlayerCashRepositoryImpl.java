@@ -44,4 +44,5 @@ public class SQLPlayerCashRepositoryImpl implements PlayerCashRepository {
 
     @Override public PlayerCash unregisterCash(UUID uniqueId) { return null; }
     @Override public void registerPlayerCash(PlayerCash playerCash) { }
+    @Override public void close() {}
 }

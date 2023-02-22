@@ -11,5 +11,6 @@ public interface PlayerCashRepository {
     PlayerCash getPlayerCash(UUID uniqueId);
     PlayerCash unregisterCash(UUID uniqueId);
     void registerPlayerCash(PlayerCash playerCash);
+    void close();
 
 }
