@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 public class CashExpression extends SimpleExpression<Long> {
 
     static {
-        Skript.registerExpression(CashExpression.class, Long.class, ExpressionType.PROPERTY, "cash of %player%");
+        Skript.registerExpression(CashExpression.class, Long.class, ExpressionType.PROPERTY, "%player%'cash");
     }
 
     private Expression<Player> player;
