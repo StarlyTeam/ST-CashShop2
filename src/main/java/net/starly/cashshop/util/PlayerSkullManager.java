@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.starly.cashshop.CashShopMain;
+import net.starly.cashshop.VersionController;
 import net.starly.cashshop.exception.UnSupportedVersionException;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;
@@ -26,14 +27,7 @@ public class PlayerSkullManager {
     private static final Map<UUID, String> skinTagMap = new HashMap<>();
     private static boolean highVersion;
     static {
-        highVersion = false;
-        try { new ItemStack(Material.SKULL_ITEM, 1, (byte) 3); }
-        catch (Exception ignore) {
-            try {
-                new ItemStack(Material.valueOf("PLAYER_HEAD"));
-                highVersion = true;
-            } catch (Exception ignored) {}
-        }
+        highVersion = !VersionController.getInstance().getVersion().equals(VersionController.Version.v1_12_R1);
     }
 
     private static String getSkinTag(UUID uniqueId) {
