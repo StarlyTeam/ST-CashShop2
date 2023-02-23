@@ -13,6 +13,8 @@ public class NmsItemStackSupport {
 
     private Method bukkitCopyMethod;
     private Method nmsCopyMethod;
+    @Getter private Method setTagMethod;
+    @Getter private Method getTagMethod;
     @Getter private NmsNbtTagCompoundSupport nbtTagCompoundWrapper;
     private NmsItemSupport nmsItemSupport;
 
@@ -29,6 +31,11 @@ public class NmsItemStackSupport {
         catch (Exception e) { nmsItemSupport = new NmsItemSupport("net.minecraft.world.item.Item", NMSItemStack); }
         bukkitCopyMethod = craftItemStack.getDeclaredMethod("asBukkitCopy", NMSItemStack);
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
+        try {
+            setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtTagCompoundWrapper.getNBTTagCompound());
+        } catch (Exception e) { setTagMethod = NMSItemStack.getDeclaredMethod("a", nbtTagCompoundWrapper.getNBTTagCompound()); }
+        try { getTagMethod = NMSItemStack.getDeclaredMethod("getTag"); }
+        catch (Exception e) { getTagMethod = NMSItemStack.getDeclaredMethod("u"); }
     }
 
     public ItemStack asBukkitCopy(NmsItemStackWrapper nmsItemStack) throws InvocationTargetException, IllegalAccessException {
