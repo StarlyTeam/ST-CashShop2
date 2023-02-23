@@ -10,11 +10,14 @@ version '1.0'
 repositories {
     mavenCentral()
     maven {
-        url = "https://maven.citizensnpcs.co/repo"
-    }
-    maven {
         url = "http://starly.kr:8083/repository/maven-public/"
         allowInsecureProtocol = true
+    }
+    maven {
+        url = "https://repo.skriptlang.org/releases"
+    }
+    maven {
+        url = "https://repo.extendedclip.com/content/repositories/placeholderapi"
     }
 }
 
@@ -34,6 +37,12 @@ dependencies {
 
     // HIKARI_CP
     api group: 'com.zaxxer', name: 'HikariCP', version: '3.4.5'
+
+    // SKRIPT
+    compileOnly "com.github.SkriptLang:Skript:2.6.3"
+
+    // PLACE_HOLDER
+    compileOnly "me.clip:placeholderapi:2.11.1"
 }
 
 tasks.withType(JavaCompile) {
