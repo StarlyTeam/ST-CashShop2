@@ -25,8 +25,8 @@ public class ItemStackWrapper {
         wrapper.getSetTagMethod().invoke(nmsItemStack, tag.getNbtTagCompound());
     }
 
-    public ItemWrapper getItem() {
-        return new ItemWrapper(itemSupport, this);
+    public NmsItemWrapper getItem() {
+        return new NmsItemWrapper(itemSupport, this);
     }
 
 }

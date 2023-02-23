@@ -1,6 +1,8 @@
 package net.starly.cashshop.listener;
 
 import net.starly.cashshop.CashShopMain;
+import net.starly.cashshop.message.MessageContext;
+import net.starly.cashshop.message.impl.CashShopMessageContextImpl;
 import net.starly.cashshop.shop.container.impl.CashShopContainer;
 import net.starly.cashshop.shop.impl.CashShopImpl;
 import net.starly.cashshop.shop.settings.GlobalShopSettings;
@@ -27,8 +29,15 @@ public class ShopListener implements Listener {
             Entity entity = event.getRightClicked();
             if(entity.getCustomName() == null) return;
             CashShopImpl shop = CashShopMain.getPlugin().getCashShopRepository().getShopAtNpcName(entity.getCustomName());
-            if(shop != null)
+            if(shop != null) {
+                if(shop.isClosed()) {
+                    if(!player.isOp()) {
+                        CashShopMessageContextImpl.getInstance().get(MessageContext.Type.ERROR, "shopIsClosed").send(player);
+                        return;
+                    }
+                }
                 new CashShopContainer(GlobalShopSettings.getInstance().isPrintNpcName() ? entity.getCustomName() : shop.getName(), shop).open(player, true);
+            }
         }
     }
 
