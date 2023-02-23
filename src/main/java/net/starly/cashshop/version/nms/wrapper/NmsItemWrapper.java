@@ -18,6 +18,7 @@ public class NmsItemWrapper {
             try {
                 getItemMethod = itemSupport.getNmsItemStackClass().getMethod("getItem");
             } catch (Exception e) { getItemMethod = itemSupport.getNmsItemClass().getMethod("c"); }
+            getItemMethod.setAccessible(true);
             Item = getItemMethod.invoke(nmsItemStackWrapper.getNmsItemStack());
         } catch (Exception e) {
             e.printStackTrace();
