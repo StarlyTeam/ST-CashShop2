@@ -59,7 +59,7 @@ public class VersionController {
         Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it->{
             if(server.getVersion().contains(it.v)) {
                 if(it.v2 != null) return server.getVersion().contains(it.v2);
-                else return false;
+                else return true;
             } else return false;
         }).findFirst();
         versionFilter.ifPresent(value -> this.version = value);
