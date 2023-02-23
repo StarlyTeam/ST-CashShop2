@@ -21,12 +21,12 @@ public class CashExpansion2 extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "ST-CashShop";
+        return "ST-CashShop2";
     }
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0";
+        return "1.0.1";
     }
 
     @Override
