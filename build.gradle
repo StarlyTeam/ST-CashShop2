@@ -10,6 +10,9 @@ version '1.0'
 repositories {
     mavenCentral()
     maven {
+        url = "https://maven.citizensnpcs.co/repo"
+    }
+    maven {
         url = "http://starly.kr:8083/repository/maven-public/"
         allowInsecureProtocol = true
     }
@@ -40,3 +43,10 @@ tasks.withType(JavaCompile) {
 jar {
     finalizedBy shadowJar
 }
+
+task copyJar(type: Copy) {
+    from 'build\\libs\\ST-CashShop-1.0-all.jar'
+    into "D:\\MCServers\\st-test\\plugins"
+}
+
+build.dependsOn copyJar
