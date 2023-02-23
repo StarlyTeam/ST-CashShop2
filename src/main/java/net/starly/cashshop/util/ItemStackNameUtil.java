@@ -2,11 +2,13 @@ package net.starly.cashshop.util;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
-import net.minecraft.server.v1_12_R1.Item;
 import net.starly.cashshop.CashShopMain;
+import net.starly.cashshop.VersionController;
+import net.starly.cashshop.version.nms.wrapper.NmsItemStackWrapper;
+import net.starly.cashshop.version.nms.support.NmsItemStackSupport;
+import net.starly.cashshop.version.nms.wrapper.NmsItemWrapper;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -37,12 +39,18 @@ public class ItemStackNameUtil {
     public static String getItemName(ItemStack itemStack) {
         if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
             return itemStack.getItemMeta().getDisplayName();
-        net.minecraft.server.v1_12_R1.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
-        Item nmsItem = nmsItemStack.getItem();
-        String unlocalizedName = nmsItem.j(nmsItemStack);
-        if(languageMap.containsKey(unlocalizedName + ".name"))
-            return languageMap.get(unlocalizedName + ".name");
-        else return itemStack.getType().getData().getName();
+
+        try {
+            NmsItemStackSupport nmsItem = new NmsItemStackSupport(VersionController.getInstance().getVersion());
+            NmsItemStackWrapper nmsItemStack = nmsItem.asNMSCopy(itemStack);
+            NmsItemWrapper item = nmsItemStack.getItem();
+            String unlocalizedName = item.getUnlocalizedName(nmsItemStack);
+            if (languageMap.containsKey(unlocalizedName + ".name"))
+                return languageMap.get(unlocalizedName + ".name");
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
+        return itemStack.getType().getData().getName();
     }
 
 }

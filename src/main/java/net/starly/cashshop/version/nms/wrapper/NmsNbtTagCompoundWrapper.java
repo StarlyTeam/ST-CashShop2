@@ -1,26 +1,26 @@
 package net.starly.cashshop.version.nms.wrapper;
 
-import lombok.Getter;
-import net.starly.cashshop.version.nms.NmsNbtTagCompound;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import net.starly.cashshop.version.nms.support.NmsNbtTagCompoundSupport;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
+@Data
+@AllArgsConstructor
 public class NmsNbtTagCompoundWrapper {
 
-    @Getter private Class<?> NBTTagCompound;
-    @Getter private Method getStringMethod;
-    @Getter private Method setStringMethod;
+    private Object nbtTagCompound;
+    private NmsNbtTagCompoundSupport wrapper;
 
-    public NmsNbtTagCompoundWrapper(
-            String nbtTagCompoundClassName
-    ) throws ClassNotFoundException, NoSuchMethodException {
-        NBTTagCompound = Class.forName(nbtTagCompoundClassName);
-        getStringMethod = NBTTagCompound.getDeclaredMethod("getString", String.class);
-        setStringMethod = NBTTagCompound.getDeclaredMethod("setString", String.class, String.class);
+    public String getString(String key) throws InvocationTargetException, IllegalAccessException {
+        Object result = wrapper.getGetStringMethod().invoke(nbtTagCompound, key);
+        if(result == null) return null;
+        else return (String) result;
     }
 
-    public NmsNbtTagCompound newInstance() throws InstantiationException, IllegalAccessException {
-        return new NmsNbtTagCompound(NBTTagCompound.newInstance(), this);
+    public void setString(String key, String value) throws InvocationTargetException, IllegalAccessException {
+        wrapper.getSetStringMethod().invoke(nbtTagCompound, key, value);
     }
 
 }

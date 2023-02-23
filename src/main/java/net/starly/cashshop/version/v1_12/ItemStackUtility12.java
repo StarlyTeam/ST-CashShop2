@@ -1,41 +1,38 @@
 package net.starly.cashshop.version.v1_12;
 
 import com.google.gson.Gson;
+import net.starly.cashshop.VersionController;
 import net.starly.cashshop.version.ItemStackUtility;
-import net.starly.cashshop.version.nms.NmsItemStack;
-import net.starly.cashshop.version.nms.NmsNbtTagCompound;
 import net.starly.cashshop.version.nms.wrapper.NmsItemStackWrapper;
 import net.starly.cashshop.version.nms.wrapper.NmsNbtTagCompoundWrapper;
+import net.starly.cashshop.version.nms.support.NmsItemStackSupport;
+import net.starly.cashshop.version.nms.support.NmsNbtTagCompoundSupport;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemStackUtility12 extends ItemStackUtility {
 
-    private NmsItemStackWrapper itemWrapper;
-    private NmsNbtTagCompoundWrapper nbtWrapper;
+    private NmsItemStackSupport itemWrapper;
+    private NmsNbtTagCompoundSupport nbtWrapper;
 
     @Override
-    public NmsItemStackWrapper getItemWrapper() throws ClassNotFoundException, NoSuchMethodException {
+    public NmsItemStackSupport getItemWrapper() throws ClassNotFoundException, NoSuchMethodException {
         if(itemWrapper == null)
-            itemWrapper = new NmsItemStackWrapper(
-                    "org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack",
-                    "net.minecraft.server.v1_12_R1.ItemStack",
-                    getNptCompoundWrapper()
-            );
+            itemWrapper = new NmsItemStackSupport(VersionController.getInstance().getVersion());
         return itemWrapper;
     }
 
-    @Override
+    /*@Override
     public NmsNbtTagCompoundWrapper getNptCompoundWrapper() throws ClassNotFoundException, NoSuchMethodException {
-        if(nbtWrapper == null)
-            nbtWrapper = new NmsNbtTagCompoundWrapper("net.minecraft.server.v1_12_R1.NBTTagCompound");
+        //if(nbtWrapper == null)
+            //nbtWrapper = new NmsNbtTagCompoundWrapper("net.minecraft.server.v1_12_R1.NBTTagCompound");
         return nbtWrapper;
-    }
+    }*/
 
     @Override
     public <T> ItemStack addNbtTagCompound(T data, ItemStack item, Class<T> clazz) {
         try {
-            NmsItemStack nmsItemStack = getItemWrapper().asNMSCopy(item);
-            NmsNbtTagCompound tag = nmsItemStack.getTag();
+            NmsItemStackWrapper nmsItemStack = getItemWrapper().asNMSCopy(item);
+            NmsNbtTagCompoundWrapper tag = nmsItemStack.getTag();
             if (tag == null) tag = nbtWrapper.newInstance();
             tag.setString(clazz.getSimpleName(), new Gson().toJson(data));
             nmsItemStack.setTag(tag);
@@ -46,8 +43,8 @@ public class ItemStackUtility12 extends ItemStackUtility {
 
     public <T> void applyNbtTagCompound(T data, ItemStack item, Class<T> clazz) {
         try {
-            NmsItemStack nmsItemStack = getItemWrapper().asNMSCopy(item);
-            NmsNbtTagCompound tag = nmsItemStack.getTag();
+            NmsItemStackWrapper nmsItemStack = getItemWrapper().asNMSCopy(item);
+            NmsNbtTagCompoundWrapper tag = nmsItemStack.getTag();
             if (tag == null) tag = nbtWrapper.newInstance();
             tag.setString(clazz.getSimpleName(), new Gson().toJson(data));
             nmsItemStack.setTag(tag);
@@ -58,8 +55,8 @@ public class ItemStackUtility12 extends ItemStackUtility {
     @Override
     public <T> T getNbtTagCompound(Class<T> clazz, ItemStack item) {
         try {
-            NmsItemStack nmsItem = getItemWrapper().asNMSCopy(item);
-            NmsNbtTagCompound tag = nmsItem.getTag();
+            NmsItemStackWrapper nmsItem = getItemWrapper().asNMSCopy(item);
+            NmsNbtTagCompoundWrapper tag = nmsItem.getTag();
             if (tag == null) return null;
             else {
                 String data = tag.getString(clazz.getSimpleName());

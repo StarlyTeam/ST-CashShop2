@@ -7,7 +7,25 @@ import net.starly.cashshop.version.ItemStackUtility;
 import net.starly.cashshop.version.v1_12.ItemStackUtility12;
 import org.bukkit.Server;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public class VersionController {
+
+    public enum Version {
+        v1_12_R1("1.12"),
+        v1_13_R1("1.13"),
+        v1_14_R1("1.14"),
+        v1_15_R1("1.15"),
+        v1_16_R1("1.16"),
+        v1_17_R1("1.17"),
+        v1_18_R1("1.18"),
+        v1_19_R1("1.19");
+
+        @Getter private final String v;
+        @Getter private final String version = name();
+        Version(String v) { this.v = v; }
+    }
 
     private static VersionController instance;
     public static VersionController getInstance() {
@@ -18,14 +36,23 @@ public class VersionController {
             return null;
         }
     }
-    @Getter private final String version;
+    @Getter private Version version = null;
     @Getter private ItemStackUtility itemStackUtility;
 
     private VersionController(Server server) throws UnSupportedVersionException, ClassNotFoundException {
-        version = server.getVersion();
-        if(version.contains("1.12")) itemStackUtility = new ItemStackUtility12();
+        checkVersions(server);
+        switch (version) {
+            case v1_12_R1:
+                itemStackUtility = new ItemStackUtility12();
+                break;
+        }
 
-        if(itemStackUtility == null) throw new UnSupportedVersionException(version);
+        if(version == null) throw new UnSupportedVersionException(version.v);
+    }
+
+    private void checkVersions(Server server) throws UnSupportedVersionException {
+        Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it->server.getVersion().contains(it.v)).findFirst();
+        versionFilter.ifPresent(value -> this.version = value);
     }
 
     private String getPackageVersion(Package dir) {

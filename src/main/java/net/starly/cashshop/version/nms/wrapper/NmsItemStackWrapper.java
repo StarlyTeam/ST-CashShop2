@@ -1,41 +1,32 @@
 package net.starly.cashshop.version.nms.wrapper;
 
-import lombok.Getter;
-import net.starly.cashshop.version.nms.NmsItemStack;
-import org.bukkit.inventory.ItemStack;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import net.starly.cashshop.version.nms.support.NmsItemStackSupport;
+import net.starly.cashshop.version.nms.support.NmsItemSupport;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
+@Data
+@AllArgsConstructor
 public class NmsItemStackWrapper {
 
-    private final Method bukkitCopyMethod;
-    private final Method nmsCopyMethod;
-    @Getter private Method setTagMethod;
-    @Getter private Method getTagMethod;
-    @Getter private final NmsNbtTagCompoundWrapper nbtTagCompoundWrapper;
+    private Object nmsItemStack;
+    private NmsItemSupport itemSupport;
+    private NmsItemStackSupport wrapper;
 
-    public NmsItemStackWrapper(
-            String craftItemStackClassName,
-            String nmsItemStackClassName,
-            NmsNbtTagCompoundWrapper nbtTagCompoundWrapper
-    ) throws ClassNotFoundException, NoSuchMethodException {
-        this.nbtTagCompoundWrapper = nbtTagCompoundWrapper;
-
-        Class<?> craftItemStack = Class.forName(craftItemStackClassName);
-        Class<?> NMSItemStack = Class.forName(nmsItemStackClassName);
-        bukkitCopyMethod = craftItemStack.getDeclaredMethod("asBukkitCopy", NMSItemStack);
-        nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
-        setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtTagCompoundWrapper.getNBTTagCompound());
-        getTagMethod = NMSItemStack.getDeclaredMethod("getTag");
+    public NmsNbtTagCompoundWrapper getTag() throws InvocationTargetException, IllegalAccessException {
+        Object obj = wrapper.getGetTagMethod().invoke(nmsItemStack);
+        if(obj == null) return null;
+        return new NmsNbtTagCompoundWrapper(obj, wrapper.getNbtTagCompoundWrapper());
     }
 
-    public ItemStack asBukkitCopy(NmsItemStack nmsItemStack) throws InvocationTargetException, IllegalAccessException {
-        return (ItemStack) bukkitCopyMethod.invoke(null, nmsItemStack.getNmsItemStack());
+    public void setTag(NmsNbtTagCompoundWrapper tag) throws InvocationTargetException, IllegalAccessException {
+        wrapper.getSetTagMethod().invoke(nmsItemStack, tag.getNbtTagCompound());
     }
 
-    public NmsItemStack asNMSCopy(ItemStack itemStack) throws InvocationTargetException, IllegalAccessException {
-        return new NmsItemStack(nmsCopyMethod.invoke(null, itemStack), this);
+    public NmsItemWrapper getItem() {
+        return new NmsItemWrapper(itemSupport, this);
     }
 
 }

@@ -61,11 +61,11 @@ public class CashExpression extends SimpleExpression<Long> {
         if(player != null) {
             PlayerCash cash = CashShopMain.getPlugin().getPlayerCashRepository().getPlayerCash(player.getUniqueId());
             if(mode == Changer.ChangeMode.ADD) {
-                cash.setCash("스크립트 추가", PlayerCash.Type.ADD, (long) delta[0]);
+                cash.addCash("스크립트 추가", PlayerCash.Type.ADD, (long) delta[0]);
             } else if(mode == Changer.ChangeMode.REMOVE) {
                 cash.subCash("스크립트 감소", PlayerCash.Type.SUB, (long) delta[0]);
             } else if(mode == Changer.ChangeMode.SET) {
-                cash.subCash("스크립트 설정", PlayerCash.Type.SET, (long) delta[0]);
+                cash.setCash("스크립트 설정", PlayerCash.Type.SET, (long) delta[0]);
             }
         }
     }
