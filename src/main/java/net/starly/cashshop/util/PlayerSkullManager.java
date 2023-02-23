@@ -39,13 +39,10 @@ public class PlayerSkullManager {
     public static ItemStack getCustomSkull(String tempTag) throws UnSupportedVersionException {
         ItemStack baseItem;
         try {
-            baseItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+            if(highVersion) baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
+            else baseItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
         } catch (Exception ignore) {
-            try {
-                baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
-            } catch (Exception ignored) {
-                throw new UnSupportedVersionException(CashShopMain.getPlugin().getServer().getVersion());
-            }
+            return new ItemStack(Material.STONE);
         }
 
         String url = "https://textures.minecraft.net/texture/" + tempTag;
@@ -86,14 +83,12 @@ public class PlayerSkullManager {
             } catch (Exception e) { return new ItemStack(Material.STONE); }
         }
         ItemStack baseItem;
+
         try {
-            baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
+            if(highVersion) baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
+            else baseItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
         } catch (Exception ignore) {
-            try {
-                baseItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
-            } catch (Exception ignored) {
-                return new ItemStack(Material.STONE);
-            }
+            return new ItemStack(Material.STONE);
         }
         return CashShopMain.getPlugin().getServer().getUnsafe().modifyItemStack(baseItem, skinTag);
     }
