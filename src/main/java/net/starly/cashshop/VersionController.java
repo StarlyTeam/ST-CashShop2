@@ -20,9 +20,7 @@ public class VersionController {
         v1_16_R1("1.16"),
         v1_17_R1("1.17"),
         v1_18_R1("1.18"),
-        v1_19_R1("1.19", "R1"),
-        v1_19_R2("1.19", "R2"),
-        v1_19_R3("1.19", "R3");
+        v1_19_R2("1.19");
 
 
         @Getter private final String v;
