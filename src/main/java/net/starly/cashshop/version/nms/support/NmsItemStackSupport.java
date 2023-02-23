@@ -23,10 +23,12 @@ public class NmsItemStackSupport {
         String nmsItemStackClassName = "net.minecraft.server." + version.getVersion() + ".ItemStack";
         NmsNbtTagCompoundSupport nbtTagCompoundWrapper = new NmsNbtTagCompoundSupport("net.minecraft.server."+ version.getVersion() +".NBTTagCompound");
 
-
         Class<?> craftItemStack = Class.forName(craftItemStackClassName);
-        Class<?> NMSItemStack = Class.forName(nmsItemStackClassName);
-        nmsItemSupport = new NmsItemSupport("net.minecraft.server."+version.getVersion()+".Item", NMSItemStack);
+        Class<?> NMSItemStack;
+        try { NMSItemStack = Class.forName(nmsItemStackClassName); }
+        catch (Exception e) { NMSItemStack = Class.forName("net.minecraft.world.item.ItemStack"); }
+        try { nmsItemSupport = new NmsItemSupport("net.minecraft.server."+version.getVersion()+".Item", NMSItemStack); }
+        catch (Exception e) { nmsItemSupport = new NmsItemSupport("net.minecraft.world.item.Item", NMSItemStack); }
         bukkitCopyMethod = craftItemStack.getDeclaredMethod("asBukkitCopy", NMSItemStack);
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
         setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtTagCompoundWrapper.getNBTTagCompound());

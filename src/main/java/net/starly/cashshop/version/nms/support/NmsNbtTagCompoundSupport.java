@@ -14,7 +14,10 @@ public class NmsNbtTagCompoundSupport {
     NmsNbtTagCompoundSupport(
             String nbtTagCompoundClassName
     ) throws ClassNotFoundException, NoSuchMethodException {
-        NBTTagCompound = Class.forName(nbtTagCompoundClassName);
+        try {
+            NBTTagCompound = Class.forName(nbtTagCompoundClassName); } catch (Exception ignored) {
+            NBTTagCompound = Class.forName("net.minecraft.nbt.NBTTagCompound");
+        }
         getStringMethod = NBTTagCompound.getDeclaredMethod("getString", String.class);
         setStringMethod = NBTTagCompound.getDeclaredMethod("setString", String.class, String.class);
     }
