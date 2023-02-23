@@ -61,7 +61,6 @@ public class ItemStackNameUtil {
             NmsItemWrapper item = nmsItemStack.getItem();
             String unlocalizedName = item.getUnlocalizedName(nmsItemStack);
             if(VersionController.getInstance().getVersion().equals(VersionController.Version.v1_12_R1)) unlocalizedName += ".name";
-            System.out.println(unlocalizedName);
             if (languageMap.containsKey(unlocalizedName))
                 return languageMap.get(unlocalizedName);
         } catch (Exception ignored) {
