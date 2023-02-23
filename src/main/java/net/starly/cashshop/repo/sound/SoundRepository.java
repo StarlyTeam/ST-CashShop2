@@ -75,7 +75,7 @@ public class SoundRepository {
     private void createTemplate(int index, File dataFolder, File soundFolder, JavaPlugin plugin) {
         String prefix;
         if(plugin.getServer().getVersion().contains("1.12")) prefix = "low_version_template/";
-        else prefix = "high_version_template/";
+        else prefix = "high_version_template.";
         plugin.saveResource(prefix+ "sound-template" + index + ".yml", true);
         File source = new File(dataFolder, "sound-template" + index + ".yml");
         if (source.exists()) {
