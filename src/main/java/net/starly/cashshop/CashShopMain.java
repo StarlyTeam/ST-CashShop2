@@ -1,5 +1,6 @@
 package net.starly.cashshop;
 
+import ch.njol.skript.Skript;
 import lombok.Getter;
 import net.starly.cashshop.command.executor.CashCommand;
 import net.starly.cashshop.command.executor.CashShopCommand;
@@ -11,6 +12,8 @@ import net.starly.cashshop.shop.listener.ContainerListener;
 import net.starly.cashshop.shop.container.STContainer;
 import net.starly.cashshop.shop.listener.ShopListener;
 import net.starly.cashshop.shop.settings.GlobalShopSettings;
+import net.starly.cashshop.support.placeholder.CashExpansion;
+import net.starly.cashshop.util.ItemStackNameUtil;
 import net.starly.cashshop.util.schedule.AsyncExecutors;
 import net.starly.cashshop.message.MessageLoader;
 import net.starly.cashshop.repo.player.PlayerCashRepository;
@@ -22,6 +25,8 @@ import net.starly.core.bstats.Metrics;
 import net.starly.core.data.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Locale;
 
 public class CashShopMain extends JavaPlugin {
     private static CashShopMain plugin;
@@ -44,8 +49,12 @@ public class CashShopMain extends JavaPlugin {
             return;
         }
 
+
         // VERSION CONTROL
         VersionController.getInstance();
+
+        // INITIALIZING LANGUAGE
+        ItemStackNameUtil.initializingLocale(getServer());
 
         new Metrics(this, 12345); // TODO: 수정
 
@@ -63,6 +72,17 @@ public class CashShopMain extends JavaPlugin {
 
         // INITIALIZING
         loadConfiguration(false);
+
+        // SUPPORTS
+        if (Bukkit.getPluginManager().getPlugin("Skript") == null)
+            Bukkit.getLogger().warning("Skript 가 없어 Skript 기능이 비활성화 됩니다.");
+        else {
+            try { Skript.registerAddon(this).loadClasses("net.starly.cashshop.support", "skript"); }
+            catch (Exception e) { e.printStackTrace(); }
+        }
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null)
+            Bukkit.getLogger().warning("PlaceholderAPI 가 없어 Placeholder 기능이 비활성화 됩니다.");
+        else new CashExpansion(this).register();
     }
 
     public void loadConfiguration() { loadConfiguration(true); }

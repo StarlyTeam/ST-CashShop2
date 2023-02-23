@@ -6,6 +6,8 @@ import net.starly.cashshop.database.ConnectionPoolManager;
 import net.starly.cashshop.database.DatabaseContext;
 import net.starly.cashshop.repo.player.PlayerCashRepository;
 import net.starly.core.data.Config;
+import org.bukkit.OfflinePlayer;
+
 import java.sql.*;
 import java.util.UUID;
 
@@ -23,6 +25,24 @@ public class SQLPlayerCashRepositoryImpl implements PlayerCashRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public PlayerCash getPlayerCash(OfflinePlayer player) {
+        UUID uniqueId = player.getUniqueId();
+        try (
+                Connection con = ConnectionPoolManager.getInternalPool().getConnection();
+                PreparedStatement stmt = con.prepareStatement(DatabaseContext.PLAYER_CASH_GET);
+        ) {
+            stmt.setString(1, uniqueId.toString());
+            ResultSet set = stmt.executeQuery();
+            if(set.next())
+                return new SqlPlayerCashImpl(uniqueId, set.getLong("balance"), set.getInt("id"));
+            return null;
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

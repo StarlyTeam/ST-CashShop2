@@ -6,6 +6,7 @@ import net.starly.cashshop.cash.impl.YamlPlayerCashImpl;
 import net.starly.cashshop.repo.player.PlayerCashRepository;
 import net.starly.cashshop.util.JsonUtil;
 import net.starly.core.data.Config;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -44,6 +45,12 @@ public class YamlPlayerCashRepositoryImpl implements PlayerCashRepository {
             impl.load();
             return impl;
         });
+    }
+
+    @Override
+    public PlayerCash getPlayerCash(OfflinePlayer player) {
+        if(cashMap.containsKey(player.getUniqueId())) return getPlayerCash(player.getUniqueId());
+        return null;
     }
 
     @Override
