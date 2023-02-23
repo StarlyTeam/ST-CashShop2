@@ -16,7 +16,7 @@ public class CashExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getIdentifier() {
-        return "starly";
+        return "stcashshop";
     }
 
     @Override
