@@ -7,7 +7,6 @@ import net.starly.cashshop.command.executor.CashShopCommand;
 import net.starly.cashshop.database.ConnectionPoolManager;
 import net.starly.cashshop.database.DatabaseContext;
 import net.starly.cashshop.repo.sound.SoundRepository;
-import net.starly.cashshop.shop.STCashShop;
 import net.starly.cashshop.shop.listener.ContainerListener;
 import net.starly.cashshop.shop.container.STContainer;
 import net.starly.cashshop.shop.listener.ShopListener;
@@ -25,8 +24,6 @@ import net.starly.core.bstats.Metrics;
 import net.starly.core.data.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Locale;
 
 public class CashShopMain extends JavaPlugin {
     private static CashShopMain plugin;

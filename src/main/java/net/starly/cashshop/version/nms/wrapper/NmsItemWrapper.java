@@ -14,7 +14,10 @@ public class NmsItemWrapper {
     public NmsItemWrapper(NmsItemSupport itemSupport, NmsItemStackWrapper nmsItemStackWrapper) {
         try {
             support = itemSupport;
-            Method getItemMethod = itemSupport.getNmsItemStackClass().getMethod("getItem");
+            Method getItemMethod;
+            try {
+                getItemMethod = itemSupport.getNmsItemStackClass().getMethod("getItem");
+            } catch (Exception e) { getItemMethod = itemSupport.getNmsItemClass().getMethod("c"); }
             Item = getItemMethod.invoke(nmsItemStackWrapper.getNmsItemStack());
         } catch (Exception e) {
             e.printStackTrace();
