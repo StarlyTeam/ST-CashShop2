@@ -15,7 +15,6 @@ public class CashShopCommand extends STCashCommand {
         super(plugin, command, true);
         registerSubCommand(
                 CashShopSubCommands.OPEN,
-                CashShopSubCommands.NPC,
                 CashShopSubCommands.CREATE,
                 CashShopSubCommands.REMOVE,
                 CashShopSubCommands.EDIT,

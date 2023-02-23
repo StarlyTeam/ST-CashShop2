@@ -3,6 +3,7 @@ package net.starly.cashshop.util;
 import net.starly.cashshop.message.MessageContext;
 import net.starly.cashshop.message.impl.CashMessageContextImpl;
 import net.starly.cashshop.message.impl.CashShopMessageContextImpl;
+import net.starly.cashshop.shop.STCashShop;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -43,6 +44,11 @@ public class Replacer {
             else return append((Player) sender);
         }
 
+        public ReplacerBuilder append(STCashShop shop) {
+            functions.add((it)->it.replace("{shop}", shop.getName()));
+            return this;
+        }
+
         public ReplacerBuilder append(ConsoleCommandSender console) {
             functions.add((it)->it.replace("{player}", "콘솔"));
             return this;
@@ -50,6 +56,11 @@ public class Replacer {
 
         public ReplacerBuilder append(OfflinePlayer player) {
             functions.add((it)->it.replace("{player}", player.getName()));
+            return this;
+        }
+
+        public ReplacerBuilder appendSystemMessage(String systemMessage) {
+            functions.add((it)->it.replace("{system}", systemMessage));
             return this;
         }
 

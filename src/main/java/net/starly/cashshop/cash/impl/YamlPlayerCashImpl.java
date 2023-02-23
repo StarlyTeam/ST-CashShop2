@@ -96,8 +96,8 @@ public class YamlPlayerCashImpl implements PlayerCash {
         try {
             if (!logFile.exists()) logFile.createNewFile();
             AsyncExecutors.run(() -> {
-                try (BufferedWriter br = new BufferedWriter(new FileWriter(logFile))) {
-                    br.append("uniqueId: ["+uniqueId+"] 타입: [" + type.getLogName() + "] 상대: [" + source + "] 금액: [" + amount + "] 잔고: [" + cash + "]");
+                try (BufferedWriter br = new BufferedWriter(new FileWriter(logFile, true))) {
+                    br.append("uniqueId: [").append(String.valueOf(uniqueId)).append("] 타입: [").append(type.getLogName()).append("] 상대: [").append(source).append("] 금액: [").append(String.valueOf(amount)).append("] 잔고: [").append(String.valueOf(cash)).append("]\n");
                     br.flush();
                 } catch (IOException ignored) { }
             });
@@ -108,7 +108,7 @@ public class YamlPlayerCashImpl implements PlayerCash {
     public void load() {
         File file = getSaveFile();
         if(file.exists())
-            this.cash = Objects.requireNonNull(JsonUtil.<YamlPlayerCashImpl>fromJsonFile(file, YamlPlayerCashImpl.class)).cash;
+            this.cash = Objects.requireNonNull(JsonUtil.fromJsonFile(file, YamlPlayerCashImpl.class)).cash;
     }
 
 }

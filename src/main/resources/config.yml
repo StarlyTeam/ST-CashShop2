@@ -5,22 +5,25 @@
 # 상점 데이터는 Local 에 저장됩니다.
 # ------------------------------------------------------------------------------------
 database:
-  use: false
+  use: true
   host: localhost
   port: 3306
   database: starlystore
   user: root
-  password: starly123!@
+  password: W134679w@
   prefix: cash
 
 # ------------------------------------------------------------------------------------
 # SHOP SETTINGS
 # ------------------------------------------------------------------------------------
 shop:
+  # 상점을 열었을 때, 창을 npc 이름으로 표시할 지 여부입니다.
+  print-npc-name: false
+
   # 플레이어의 머리 아이템으로 정보를 출력할 수 있습니다.
   player-head-info:
     # 해당 기능을 사용할지 결정합니다.
-    use: true
+    use: false
     # 머리 아이템이 표시 될 위치를 지정합니다. (최소 : 0 / 최대 : 53)
     # * 참고 이미지 - https://wiki.vg/images/b/bb/DoubleChest-slots.png
     slot: 49
@@ -28,10 +31,11 @@ shop:
     # 머리 아이템의 이름을 설정합니다.
     name: '&a내 정보'
     # 머리 아이템의 로어를 설정합니다.
+    # {player} : 플레이어
     # {cash} : 캐시
-    info:
+    lore:
       - '&7----------------------------'
-      - '&6&l  << &a내 정보 &b&l>>'
+      - '&6&l  << &a내 정보 &6&l>>'
       - ' &b 보유 캐시 : {cash}'
       - '&7----------------------------'
 
@@ -58,52 +62,78 @@ shop:
     # 재고가 설정 된 상점에서는 무조건 1개씩만 구매됩니다.
     click:
       # 일반 클릭 타입을 지정합니다. ( LEFT, RIGHT, ALL )
-      type: LEFT
+      type: ALL
       # 일반 클릭 시 구매 될 아이템의 수를 정합니다. ( max-full 64 )
-      amount: 1
+      amount: 2
+      # 로어에 {click-type} 을 넣으면 표시 될 이름을 설정합니다.
+      text: '&a클릭&r'
     shift-click:
       # 쉬프트-클릭 타입을 지정합니다. ( LEFT, RIGHT, ALL )
-      type: LEFT
+      type: ALL
       # 일반 클릭 시 구매 될 아이템의 수를 정합니다. ( max-full 64 )
-      amount: 64
+      amount: 30
+      # 로어에 {shift-click-type} 을 넣으면 표시 될 이름을 설정합니다.
+      text: '&6쉬프트+클릭&r'
 
     # 기본 로어
-    # {cash} : 가격 ( 자동으로 messages 의 suffix 가 붙습니다. )
+    # {cash} : 가격 ( 자동으로 messages - cashshop 의 suffix 가 붙습니다. )
+    # {click-type} : 일반 클릭 타입 텍스트
+    # {click-amount} : 일반 클릭 타입 개수
+    # {shift-click-type} : 쉬프트 클릭 타입 텍스트
+    # {shift-click-amount} : 쉬프트 일반 클릭 타입 개수
     default-lore:
       - '&7----------------------------'
       - ''
       - ' &b판매 가격 : &f{cash}'
+      - ' &f{click-type}&f : {click-amount}개 구매'
+      - ' &f{shift-click-type}&f : {shift-click-amount}개 구매'
       - ''
       - '&7----------------------------'
 
     # 세일 로어
     # {original} : 원래 캐시 가격 ( 자동으로 messages 의 suffix 가 붙지 않습니다. )
-    # {cash} : 현재 가격 ( 자동으로 messages 의 suffix 가 붙습니다. )
+    # {cash} : 현재 가격 ( 자동으로 messages - cashshop 의 suffix 가 붙습니다. )
+    # {sale} : 할인율
+    # {click-type} : 일반 클릭 타입 텍스트
+    # {click-amount} : 일반 클릭 타입 개수
+    # {shift-click-type} : 쉬프트 클릭 타입 텍스트
+    # {shift-click-amount} : 쉬프트 일반 클릭 타입 개수
     sale-lore:
       - '&7----------------------------'
       - ''
-      - ' &b판매 가격 : &7&m{original}&e▸&f{cash}'
+      - ' &b판매 가격 : &7&m{original}&e▸&f{cash} &c({sale}%)'
+      - ' &f{click-type}&f : {click-amount}개 구매'
+      - ' &f{shift-click-type}&f : {shift-click-amount}개 구매'
       - ''
       - '&7----------------------------'
 
-    # 재고가 설정된 아이템의 로어
-    # {cash} : 가격 ( 자동으로 messages 의 suffix 가 붙습니다. )
+    # 재고가 설정된 아이템의 로어 ( 재고 아이템의 경우 무조건 한 개 씩만 구매됩니다. )
+    # {cash} : 가격 ( 자동으로 messages - cashshop 의 suffix 가 붙습니다. )
+    # {click-type} : 일반 클릭 타입 텍스트
+    # {amount} : 현재 재고 값
+    # {max-amount} : 설정 재고 값
     limited-lore:
       - '&7----------------------------'
       - ''
       - ' &b판매 가격 : &f{cash}'
-      - ' &b남은 재고 : &f{amount} 개'
+      - ' &b남은 재고 : &f{amount}/{max-amount} 개'
+      - ' &f{click-type}&f : 구매'
       - ''
       - '&7----------------------------'
 
-    # 재고가 설정된 아이템의 세일 로어
+    # 재고가 설정된 아이템의 세일 로어 ( 재고 아이템의 경우 무조건 한 개 씩만 구매됩니다. )
     # {original} : 원래 캐시 가격 ( 자동으로 messages 의 suffix 가 붙지 않습니다. )
-    # {cash} : 가격 ( 자동으로 messages 의 suffix 가 붙습니다. )
+    # {sale} : 할인율
+    # {cash} : 가격 ( 자동으로 messages - cashshop 의 suffix 가 붙습니다. )
+    # {click-type} : 일반 클릭 타입 텍스트
+    # {amount} : 현재 재고 값
+    # {max-amount} : 설정 재고 값
     limited-sale-lore:
       - '&7----------------------------'
       - ''
-      - ' &b판매 가격 : &7&m{original}&e▸&f{cash}'
-      - ' &b남은 재고 : &f{amount} 개'
+      - ' &b판매 가격 : &7&m{original}&e▸&f{cash} &c({sale}%)'
+      - ' &b남은 재고 : &f{amount}/{max-amount} 개'
+      - ' &f{click-type}&f : 구매'
       - ''
       - '&7----------------------------'
 
@@ -114,18 +144,18 @@ shop:
 # ------------------------------------------------------------------------------------
 # 예시) 캐시 초기화 시, 초기화 된 플레이어게 메세지를 보내기 싫은 경우
 #   아래와 같이 resetCashToPlayer... 줄 앞에 # 을 추가하여 메세지를 보내지 않을 수 있습니다.
-#resetCashToPlayer: '&f{player}님이 당신의 돈을 초기화하였습니다.'
+##<--resetCashToPlayer: '&f{player}님이 당신의 돈을 초기화하였습니다.'
 # ------------------------------------------------------------------------------------
 # 예시2) 메세지 전송 시, prefix 를 붙이고 싶지 않은 경우,
 #   아래와 같이 prefix... 줄 앞에 # 을 추가하여 메세지를 보내지 않을 수 있습니다.
-#prefix: '&b[캐시] &r'
+##<--prefix: '&b[캐시] &r'
 # ------------------------------------------------------------------------------------
 messages:
   cash:
     # 접두사
     prefix: '&b[캐시] &r'
 
-    # 접미사
+    # 캐시 단위
     suffix: '원'
 
     # 캐시를 확인했을 때 출력되는 메세지
@@ -163,17 +193,43 @@ messages:
     # 접두사
     prefix: '&b[캐시상점] &r'
 
-    # 리로드 완료시 전송되는 메세지 입니다.
-    reloadComplete: '&fconfig.yml 파일을 새로 읽어왔습니다.'
+    # 캐시 단위
+    suffix: ' 원'
 
-    # 아이템 구매에 성공한 경우
+    # 리로드 완료시 전송되는 메세지 입니다.
+    reloadComplete: '&f리로드 완료!'
+
+    # 아이템 한 개 구매에 성공한 경우
     # {item} : 아이템 이름
     # {useCash} : 사용한 캐시
     # {cash} : 남은 잔고
-    buy: '&f{item} 아이템을 구매하였습니다. &7(-{useCash})'
+    buy: '&f{item}&f 아이템을 구매하였습니다. &7(-{useCash}&7)'
+
     # 아이템 구매에 성공한 경우 (여러개)
+    # {item} : 아이템 이름
+    # {useCash} : 사용한 캐시
+    # {cash} : 남은 잔고
     # {amount} : 구매한 개수
-    buyMany: '&f{item} 아이템을 {amount}개 구매하였습니다. &7(-{useCash})'
+    buyMany: '&f{item}&f 아이템을 {amount}개 구매하였습니다. &7(-{useCash}&7)'
+
+    # 인벤토리에 공간은 부족하지만 일부만 구매에 성공했을 때 출력되는 메세지
+    # {item} : 아이템 이름
+    # {useCash} : 사용한 캐시
+    # {cash} : 남은 잔고
+    # {amount} : 구매한 개수
+    buySome: '&e인벤토리에 공간이 부족하여 &f{item}&f아이템을 {amount}개만 구매하였습니다. &7(-{useCash}&7)'
+
+    # 상점의 특정 데이터를 수정하면 출력되는 메세지
+    # {system} : 시스템에서 보내는 리턴값
+    systemMessage: '&a수정되었습니다. &7(정보:{system})'
+
+    # 상점 생성 완료 메세지
+    # {shop} : 상점 이름
+    createShop: '&f{shop}&f 상점을 생성하였습니다.'
+
+    # 상점 삭제 완료 메세지
+    # {shop} : 상점 이름
+    removeShop: '&f{shop}&f 상점을 삭제하였습니다.'
 
 errorMessages:
   cash:
@@ -196,20 +252,38 @@ errorMessages:
     permission: '&c해당 명령어를 사용할 권한이 없습니다.'
 
     # 숫자가 아닌 문자를 입력했을 때 출력되는 메세지
-    notNumber: '&c금액은 숫자로 입력해주세요.'
+    notNumber: '&c숫자로 입력해주세요.'
 
     # 잘못된 명령어를 입력했을 때 출력되는 메세지
     wrongCommand: '&c잘못된 명령어입니다.'
 
     # 더 이상 구매할 수 없을 경우 (인벤토리가 가득 찬 경우 혹은 부족한 경우)
-    notEnoughInventorySlot: '&c더 이상 아이템을 받을 공간이 부족합니다.'
+    notEnoughInventorySlot: '&c더 이상 상품을 저장할 공간이 부족합니다.'
 
     # 캐시 잔액이 부족한 경우
     # {cash} : 부족한 캐시
     notEnoughCash: '&c캐시가 {cash} 모자랍니다.'
 
     # 재고가 부족한 경우
-    notEnoughAmount: '&c더 이상 구매가 불가능합니다.'
+    notEnoughAmount: '&c해당 상품의 재고가 없습니다.'
 
-    # 보고있던 캐시 상점이 닫힌 경우 ( 플러그인 비활성화, 리로드, 상점 삭제... )
-    closeShop: '&c상점이 점검을 위하여 창을 닫았습니다.'
+    # 보고있던 캐시 상점이 닫힌 경우 ( 리로드, 상점 삭제... )
+    closeShop: '&c상점 점검을 위하여 창을 닫았습니다.'
+
+    # 상점이름을 입력하지 않은 경우
+    noShopName: '&c상점이름을 입력해주세요.'
+
+    # 상점을 찾을 수 없을 때 출력되는 메세지
+    shopNameNotFound: '&c해당 상점을 찾을 수 없습니다.'
+
+    # 상점을 생성할 때 이미 있는 이름이라면
+    containsShopName: '&c이미 있는 상점입니다.'
+
+    # 상점을 생성할 때 줄 수를 입력하지 않거나 숫자가 아닌 경우
+    noLineValue: '&c줄 수를 입력해주세요.'
+
+    # 상점을 생성할 때 줄 수가 올바르지 않은 경우
+    wrongLineValue: '&c상점의 줄 수는 1~6 사이의 수만 가능합니다.'
+
+    # 상점 목록 명령어 입력 시 생성 된 상점이 없을 때
+    emptyShopList: '&c생성 된 상점이 없습니다.'

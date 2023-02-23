@@ -27,13 +27,13 @@ public class JsonUtil {
         if(!file.exists()) {
             try {
                 file.createNewFile();
-                try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-                    bw.write(toJson(data));
-                    bw.flush();
-                    return file;
-                } catch (Exception e) { e.printStackTrace(); }
             } catch (IOException e) { e.printStackTrace(); }
         }
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            bw.write(toJson(data));
+            bw.flush();
+            return file;
+        } catch (Exception e) { e.printStackTrace(); }
         return null;
     }
 

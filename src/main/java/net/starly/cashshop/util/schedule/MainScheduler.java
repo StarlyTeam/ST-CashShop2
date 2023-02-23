@@ -15,6 +15,9 @@ public class MainScheduler implements STScheduler {
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private long lastTick = 0L;
 
+    public MainScheduler() {
+    }
+
     public SchedulerRunnable runTask(Runnable r) {
         SchedulerRunnable runnable = new SchedulerRunnable(this.lastTick, 0L, 0L, r, this.taskId.getAndIncrement());
         this.lock.writeLock().lock();
@@ -41,15 +44,12 @@ public class MainScheduler implements STScheduler {
 
     public SchedulerRunnable getTask(int taskId) {
         LinkedList<SchedulerRunnable> list = (LinkedList<SchedulerRunnable>)this.runnableList.clone();
-        Iterator var3 = list.iterator();
+        Iterator<SchedulerRunnable> var3 = list.iterator();
 
         SchedulerRunnable r;
         do {
-            if (!var3.hasNext()) {
-                return null;
-            }
-
-            r = (SchedulerRunnable)var3.next();
+            if (!var3.hasNext()) return null;
+            r = var3.next();
         } while(r.getTaskId() != (long)taskId);
 
         return r;
@@ -59,7 +59,7 @@ public class MainScheduler implements STScheduler {
         this.lastTick = currentTick;
 
         while(!this.nextTasks.isEmpty()) {
-            SchedulerRunnable runnable = (SchedulerRunnable)this.nextTasks.poll();
+            SchedulerRunnable runnable = this.nextTasks.poll();
             this.runnableList.addLast(runnable);
         }
 

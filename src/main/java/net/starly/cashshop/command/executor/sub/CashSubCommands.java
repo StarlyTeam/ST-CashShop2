@@ -13,9 +13,9 @@ import org.bukkit.entity.Player;
 
 public class CashSubCommands {
 
-    private static final STSubCommand moneySub = new STSubCommand("", "", "player");
-    private static final STSubCommand playerSubNoMoney = new STSubCommand("", "", "player");
-    private static final STSubCommand playerSubMoney = new STSubCommand("", "", "player", moneySub, (a, b)->{});
+    private static final STSubCommand moneySub = new STSubCommand("<캐시>", "<amount>", "player");
+    private static final STSubCommand playerSubNoMoney = new STSubCommand("<닉네임>", "<player>", "player");
+    private static final STSubCommand playerSubMoney = new STSubCommand("<닉네임>", "<player>", "player", moneySub, (a, b)->{});
     private static final CashMessageContextImpl context = CashMessageContextImpl.getInstance();
     public static final STSubCommand INFO = new STSubCommand("확인", "info", "해당 유저의 캐시를 확인합니다.", playerSubNoMoney, (sender, args)-> {
         CashShopMain plugin = CashShopMain.getPlugin();

@@ -13,6 +13,11 @@ public class STMessage {
 
     private String prefix;
     private String message;
+
+    public String getText() {
+        return prefix + message;
+    }
+
     public void send(CommandSender sender) {
         if(message.isEmpty()) return;
         sender.sendMessage(prefix + message);

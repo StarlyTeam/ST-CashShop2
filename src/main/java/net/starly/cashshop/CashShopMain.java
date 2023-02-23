@@ -5,13 +5,19 @@ import net.starly.cashshop.command.executor.CashCommand;
 import net.starly.cashshop.command.executor.CashShopCommand;
 import net.starly.cashshop.database.ConnectionPoolManager;
 import net.starly.cashshop.database.DatabaseContext;
+import net.starly.cashshop.repo.sound.SoundRepository;
+import net.starly.cashshop.shop.STCashShop;
+import net.starly.cashshop.shop.listener.ContainerListener;
+import net.starly.cashshop.shop.container.STContainer;
+import net.starly.cashshop.shop.listener.ShopListener;
+import net.starly.cashshop.shop.settings.GlobalShopSettings;
 import net.starly.cashshop.util.schedule.AsyncExecutors;
 import net.starly.cashshop.message.MessageLoader;
 import net.starly.cashshop.repo.player.PlayerCashRepository;
 import net.starly.cashshop.repo.player.impl.SQLPlayerCashRepositoryImpl;
 import net.starly.cashshop.repo.player.impl.YamlPlayerCashRepositoryImpl;
 import net.starly.cashshop.repo.shop.CashShopRepository;
-import net.starly.cashshop.repo.shop.impl.EmptyCashShopRepositoryImpl;
+import net.starly.cashshop.repo.shop.impl.CashShopRepositoryImpl;
 import net.starly.core.bstats.Metrics;
 import net.starly.core.data.Config;
 import org.bukkit.Bukkit;
@@ -23,6 +29,7 @@ public class CashShopMain extends JavaPlugin {
     @Getter private Config stConfig;
     @Getter private CashShopRepository cashShopRepository;
     @Getter private PlayerCashRepository playerCashRepository;
+    @Getter private SoundRepository soundRepository;
 
     @Override
     public void onLoad() { plugin = this; }
@@ -51,6 +58,8 @@ public class CashShopMain extends JavaPlugin {
         new CashShopCommand(this, "cashshop");
 
         // EVENT
+        getServer().getPluginManager().registerEvents(new ContainerListener(), this);
+        getServer().getPluginManager().registerEvents(new ShopListener(), this);
 
         // INITIALIZING
         loadConfiguration(false);
@@ -63,17 +72,23 @@ public class CashShopMain extends JavaPlugin {
             ConnectionPoolManager pool = ConnectionPoolManager.getInternalPool();
             if(pool != null) pool.closePool();
         }
+        GlobalShopSettings.getInstance().initializing(stConfig);
         DatabaseContext.initializingContext(stConfig);
         MessageLoader.load(stConfig);
-        cashShopRepository = new EmptyCashShopRepositoryImpl();
+        cashShopRepository = new CashShopRepositoryImpl();
         if(stConfig.getBoolean("database.use")) playerCashRepository = new SQLPlayerCashRepositoryImpl();
         else playerCashRepository = new YamlPlayerCashRepositoryImpl();
+        if(soundRepository == null) soundRepository = SoundRepository.getInstance();
 
         playerCashRepository.initializing(stConfig);
+        cashShopRepository.initializing(stConfig);
+        soundRepository.initializing(this);
     }
 
     @Override
     public void onDisable() {
+        cashShopRepository.getShops().forEach((shop)->shop.save(false));
+        STContainer.closeShopAll();
         AsyncExecutors.shutdown();
         ConnectionPoolManager pool = ConnectionPoolManager.getInternalPool();
         playerCashRepository.close();

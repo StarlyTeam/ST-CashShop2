@@ -42,7 +42,7 @@ public abstract class STCashCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        execute(sender, s.equals("캐시"), args);
+        execute(sender, s, !s.equals(this.command), args);
         return false;
     }
 
@@ -64,37 +64,45 @@ public abstract class STCashCommand implements CommandExecutor, TabCompleter {
 
     protected abstract boolean isPlayerTab();
 
-    private void execute(CommandSender player, boolean korean, String[] args) {
-        if(args.length == 0) printHelpLine(player, korean);
+    private void execute(CommandSender player, String label, boolean korean, String[] args) {
+        if(args.length == 0) printHelpLine(player, label, korean);
         else {
             Optional<STSubCommand> optionalSTSubCommand = subCommands.stream().filter((it)->it.getKor().equals(args[0]) || it.getEng().equals(args[0])).findFirst();
             if(optionalSTSubCommand.isPresent()) {
                 STSubCommand sub = optionalSTSubCommand.get();
-                if(sub.hasNext() && args.length == 1) context.get(MessageContext.Type.ERROR, "noPlayerName").send(player);
-                else sub.execute(player, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length), false);
+                if(sub.hasNext() && args.length == 1 && isPlayerTab()) context.get(MessageContext.Type.ERROR, "noPlayerName").send(player);
+                else sub.execute(player, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length), label.equalsIgnoreCase("cashshop") || label.equals("캐시상점"));
             } else context.get(MessageContext.Type.ERROR, "wrongCommand").send(player);
         }
     }
 
-    protected void printHelpLine(CommandSender sender, boolean korean) {
-        reformattedHelpline(korean, subCommands
+    protected void printHelpLine(CommandSender sender, String label, boolean korean) {
+        reformattedHelpline(korean, label, subCommands
                 .stream()
                 .filter((it)-> sender.isOp() || sender.hasPermission("starly.cashshop."+it.getEng()))
                 .collect(Collectors.toList())
         ).forEach(sender::sendMessage);
     }
 
-    protected List<String> reformattedHelpline(boolean korean, List<STSubCommand> subCommandList) {
+    protected List<String> reformattedHelpline(boolean korean, String label, List<STSubCommand> subCommandList) {
         return subCommandList.stream().map((it)-> {
             StringBuilder builder = new StringBuilder("§6/");
-            builder.append(command);
+            builder.append(label);
             builder.append(" ");
             if(korean) {
                 builder.append(it.getKor());
-                if(it.hasNext()) builder.append(" ").append(it.getNextCommand().getKor());
+                STSubCommand pointer = it;
+                while(pointer.hasNext()) {
+                    pointer = pointer.getNextCommand();
+                    builder.append(" ").append(pointer.getKor());
+                }
             } else {
                 builder.append(it.getEng());
-                if(it.hasNext()) builder.append(" ").append(it.getNextCommand().getEng());
+                STSubCommand pointer = it;
+                while(pointer.hasNext()) {
+                    pointer = pointer.getNextCommand();
+                    builder.append(" ").append(pointer.getEng());
+                }
             }
             builder.append("§f : ").append(it.getDescription());
             return builder.toString();

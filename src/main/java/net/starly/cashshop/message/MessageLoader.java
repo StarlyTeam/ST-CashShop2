@@ -22,9 +22,9 @@ public class MessageLoader {
         ConfigurationSection errorMessagesSection = Objects.requireNonNull(config.getConfigurationSection("errorMessages"));
 
         loadMessageSection(messagesSection.getConfigurationSection("cash"), MessageContext.Type.DEFAULT, false);
-        loadMessageSection(messagesSection.getConfigurationSection("net/starly/cashshop"), MessageContext.Type.DEFAULT, true);
+        loadMessageSection(messagesSection.getConfigurationSection("cashshop"), MessageContext.Type.DEFAULT, true);
         loadMessageSection(errorMessagesSection.getConfigurationSection("cash"), MessageContext.Type.ERROR, false);
-        loadMessageSection(errorMessagesSection.getConfigurationSection("net/starly/cashshop"), MessageContext.Type.ERROR, true);
+        loadMessageSection(errorMessagesSection.getConfigurationSection("cashshop"), MessageContext.Type.ERROR, true);
 
         loaded = true;
     }
