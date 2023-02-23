@@ -12,6 +12,7 @@ import net.starly.cashshop.shop.container.STContainer;
 import net.starly.cashshop.listener.ShopListener;
 import net.starly.cashshop.shop.settings.GlobalShopSettings;
 import net.starly.cashshop.support.placeholder.CashExpansion;
+import net.starly.cashshop.support.placeholder.CashExpansion2;
 import net.starly.cashshop.util.ItemStackNameUtil;
 import net.starly.cashshop.executor.AsyncExecutors;
 import net.starly.cashshop.message.MessageLoader;
@@ -80,7 +81,10 @@ public class CashShopMain extends JavaPlugin {
         }
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null)
             Bukkit.getLogger().warning("PlaceholderAPI 가 없어 Placeholder 기능이 비활성화 됩니다.");
-        else new CashExpansion(this).register();
+        else {
+            new CashExpansion(this).register();
+            new CashExpansion2(this).register();
+        }
     }
 
     public void loadConfiguration() { loadConfiguration(true); }
