@@ -20,11 +20,16 @@ public class VersionController {
         v1_16_R1("1.16"),
         v1_17_R1("1.17"),
         v1_18_R1("1.18"),
-        v1_19_R1("1.19");
+        v1_19_R1("1.19", "R1"),
+        v1_19_R2("1.19", "R2"),
+        v1_19_R3("1.19", "R3");
+
 
         @Getter private final String v;
+        @Getter private final String v2;
         @Getter private final String version = name();
-        Version(String v) { this.v = v; }
+        Version(String v) { this.v = v; v2 = null; }
+        Version(String v, String v2) { this.v = v; this.v2 = v2; }
     }
 
     private static VersionController instance;
@@ -51,7 +56,12 @@ public class VersionController {
     }
 
     private void checkVersions(Server server) throws UnSupportedVersionException {
-        Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it->server.getVersion().contains(it.v)).findFirst();
+        Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it->{
+            if(server.getVersion().contains(it.v)) {
+                if(it.v2 != null) return server.getVersion().contains(it.v2);
+                else return false;
+            } else return false;
+        }).findFirst();
         versionFilter.ifPresent(value -> this.version = value);
     }
 
