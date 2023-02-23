@@ -30,7 +30,7 @@ public class CashShopCommand extends STCashCommand {
             if(!(args[0].equals("목록") || args[0].equals("list")) && !(args[0].equals("리로드") || args[0].equals("reload")))
                 return StringUtil.copyPartialMatches(args[1], CashShopMain.getPlugin().getCashShopRepository().getShopNames(), new ArrayList<>());
             else return Collections.emptyList();
-        }
+        } else if(args.length == 3 && args[0].equals("생성")) return StringUtil.copyPartialMatches(args[2], Arrays.asList("1", "2", "3", "4", "5", "6"), new ArrayList<>());
         return super.onTabComplete(sender, cmd, label, args);
     }
 

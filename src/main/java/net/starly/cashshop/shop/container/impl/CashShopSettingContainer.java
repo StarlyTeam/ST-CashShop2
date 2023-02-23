@@ -60,7 +60,11 @@ public class CashShopSettingContainer extends STContainer {
                     container.refresh();
                 }).build().setSlot(this, 9);
 
-        new STButton.STButtonBuilder(Material.CARROT_ITEM)
+        Material material;
+        try {
+            material = Material.CARROT_ITEM;
+        } catch (Exception e) { material = Material.valueOf("CARROT"); }
+        new STButton.STButtonBuilder(material)
                 .setDisplayName("§6NPC 설정")
                 .setCleanable(false)
                 .setLore(Arrays.asList("",  "§e ▸ §f상점 §e§l§nNPC§f 를 연결할 수 있습니다.", "§e ▸ §f현재 NPC : " + (shop.getNpc().isEmpty() ? "§7설정되지 않음" : shop.getNpc())))

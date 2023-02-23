@@ -5,12 +5,12 @@
 # 상점 데이터는 Local 에 저장됩니다.
 # ------------------------------------------------------------------------------------
 database:
-  use: true
+  use: false
   host: localhost
   port: 3306
   database: starlystore
   user: root
-  password: W134679w@
+  password: starly@123
   prefix: cash
 
 # ------------------------------------------------------------------------------------
