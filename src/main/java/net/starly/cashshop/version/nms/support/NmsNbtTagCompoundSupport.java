@@ -18,8 +18,10 @@ public class NmsNbtTagCompoundSupport {
             NBTTagCompound = Class.forName(nbtTagCompoundClassName); } catch (Exception ignored) {
             NBTTagCompound = Class.forName("net.minecraft.nbt.NBTTagCompound");
         }
-        getStringMethod = NBTTagCompound.getDeclaredMethod("getString", String.class);
-        setStringMethod = NBTTagCompound.getDeclaredMethod("setString", String.class, String.class);
+        try { getStringMethod = NBTTagCompound.getDeclaredMethod("getString", String.class); }
+        catch (Exception e) {getStringMethod = NBTTagCompound.getDeclaredMethod("l", String.class); }
+        try { setStringMethod = NBTTagCompound.getDeclaredMethod("setString", String.class, String.class); }
+        catch (Exception e) { setStringMethod = NBTTagCompound.getDeclaredMethod("a", String.class, String.class); }
     }
 
     public NmsNbtTagCompoundWrapper newInstance() throws InstantiationException, IllegalAccessException {
