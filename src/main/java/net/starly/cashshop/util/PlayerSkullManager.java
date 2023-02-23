@@ -87,10 +87,10 @@ public class PlayerSkullManager {
         }
         ItemStack baseItem;
         try {
-            baseItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+            baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
         } catch (Exception ignore) {
             try {
-                baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
+                baseItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             } catch (Exception ignored) {
                 return new ItemStack(Material.STONE);
             }
