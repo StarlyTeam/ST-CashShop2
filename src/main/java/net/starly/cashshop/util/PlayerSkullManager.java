@@ -26,7 +26,7 @@ public class PlayerSkullManager {
     private static final Map<UUID, String> skinTagMap = new HashMap<>();
     private static boolean highVersion;
     static {
-        highVersion = !VersionController.getInstance().getVersion().equals(VersionController.Version.v1_12_R1);
+        highVersion = VersionController.getInstance().getVersion().isHighVersion();
     }
 
     private static String getSkinTag(UUID uniqueId) {

@@ -24,7 +24,7 @@ public class ItemStackNameUtil {
     private static Map<String, String> languageMap = new HashMap<>();
 
     public static void initializingLocale(Server server) {
-        if(VersionController.getInstance().getVersion().equals(VersionController.Version.v1_12_R1)) {
+        if(!VersionController.getInstance().getVersion().isHighVersion()) {
             languageMap = new HashMap<>();
             try (InputStream var1 = CashShopMain.getPlugin().getResource("ko_kr_12.lang")) {
                 for (String var3 : IOUtils.readLines(var1, StandardCharsets.UTF_8)) {
@@ -59,7 +59,7 @@ public class ItemStackNameUtil {
             ItemStackWrapper nmsItemStack = nmsItem.asNMSCopy(itemStack);
             ItemWrapper item = nmsItemStack.getItem();
             String unlocalizedName = item.getUnlocalizedName(nmsItemStack);
-            if(VersionController.getInstance().getVersion().equals(VersionController.Version.v1_12_R1)) unlocalizedName += ".name";
+            if(!VersionController.getInstance().getVersion().isHighVersion()) unlocalizedName += ".name";
             if (languageMap.containsKey(unlocalizedName))
                 return languageMap.get(unlocalizedName);
         } catch (Exception ignored) {
