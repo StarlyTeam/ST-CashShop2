@@ -1,7 +1,7 @@
 package net.starly.cashshop.util;
 
 import net.starly.cashshop.shop.STCashShop;
-import net.starly.cashshop.shop.content.STCashShopItem;
+import net.starly.cashshop.shop.item.STCashShopItem;
 import net.starly.cashshop.shop.impl.CashShopImpl;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

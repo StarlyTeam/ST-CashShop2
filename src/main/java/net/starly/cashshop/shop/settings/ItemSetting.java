@@ -2,7 +2,7 @@ package net.starly.cashshop.shop.settings;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.starly.cashshop.shop.content.STCashShopItem;
+import net.starly.cashshop.shop.item.STCashShopItem;
 import net.starly.cashshop.util.FormattingUtil;
 import java.util.List;
 import java.util.stream.Collectors;

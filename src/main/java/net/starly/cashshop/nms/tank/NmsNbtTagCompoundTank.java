@@ -1,17 +1,17 @@
-package net.starly.cashshop.version.nms.support;
+package net.starly.cashshop.nms.tank;
 
 import lombok.Getter;
-import net.starly.cashshop.version.nms.wrapper.NmsNbtTagCompoundWrapper;
+import net.starly.cashshop.nms.wrapper.NBTTagCompoundWrapper;
 
 import java.lang.reflect.Method;
 
-public class NmsNbtTagCompoundSupport {
+public class NmsNbtTagCompoundTank {
 
     @Getter private Class<?> NBTTagCompound;
     @Getter private Method getStringMethod;
     @Getter private Method setStringMethod;
 
-    NmsNbtTagCompoundSupport(
+    NmsNbtTagCompoundTank(
             String nbtTagCompoundClassName
     ) throws ClassNotFoundException, NoSuchMethodException {
         try {
@@ -24,8 +24,8 @@ public class NmsNbtTagCompoundSupport {
         catch (Exception e) { setStringMethod = NBTTagCompound.getDeclaredMethod("a", String.class, String.class); }
     }
 
-    public NmsNbtTagCompoundWrapper newInstance() throws InstantiationException, IllegalAccessException {
-        return new NmsNbtTagCompoundWrapper(NBTTagCompound.newInstance(), this);
+    public NBTTagCompoundWrapper newInstance() throws InstantiationException, IllegalAccessException {
+        return new NBTTagCompoundWrapper(NBTTagCompound.newInstance(), this);
     }
 
 }

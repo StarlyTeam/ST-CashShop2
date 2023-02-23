@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.starly.cashshop.CashShopMain;
-import net.starly.cashshop.VersionController;
 import net.starly.cashshop.exception.UnSupportedVersionException;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;

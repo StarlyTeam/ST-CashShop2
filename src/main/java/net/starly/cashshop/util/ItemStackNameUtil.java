@@ -4,10 +4,9 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import net.starly.cashshop.CashShopMain;
-import net.starly.cashshop.VersionController;
-import net.starly.cashshop.version.nms.wrapper.NmsItemStackWrapper;
-import net.starly.cashshop.version.nms.support.NmsItemStackSupport;
-import net.starly.cashshop.version.nms.wrapper.NmsItemWrapper;
+import net.starly.cashshop.nms.wrapper.ItemStackWrapper;
+import net.starly.cashshop.nms.tank.NmsItemStackTank;
+import net.starly.cashshop.nms.wrapper.ItemWrapper;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
@@ -56,9 +55,9 @@ public class ItemStackNameUtil {
             return itemStack.getItemMeta().getDisplayName();
 
         try {
-            NmsItemStackSupport nmsItem = new NmsItemStackSupport(VersionController.getInstance().getVersion());
-            NmsItemStackWrapper nmsItemStack = nmsItem.asNMSCopy(itemStack);
-            NmsItemWrapper item = nmsItemStack.getItem();
+            NmsItemStackTank nmsItem = new NmsItemStackTank(VersionController.getInstance().getVersion());
+            ItemStackWrapper nmsItemStack = nmsItem.asNMSCopy(itemStack);
+            ItemWrapper item = nmsItemStack.getItem();
             String unlocalizedName = item.getUnlocalizedName(nmsItemStack);
             if(VersionController.getInstance().getVersion().equals(VersionController.Version.v1_12_R1)) unlocalizedName += ".name";
             if (languageMap.containsKey(unlocalizedName))

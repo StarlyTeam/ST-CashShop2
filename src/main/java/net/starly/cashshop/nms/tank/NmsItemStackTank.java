@@ -1,34 +1,33 @@
-package net.starly.cashshop.version.nms.support;
+package net.starly.cashshop.nms.tank;
 
 import lombok.Getter;
-import net.starly.cashshop.VersionController;
-import net.starly.cashshop.version.nms.wrapper.NmsItemStackWrapper;
-import net.starly.cashshop.version.nms.wrapper.NmsItemWrapper;
+import net.starly.cashshop.util.VersionController;
+import net.starly.cashshop.nms.wrapper.ItemStackWrapper;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class NmsItemStackSupport {
+public class NmsItemStackTank {
 
     private Method bukkitCopyMethod;
     private Method nmsCopyMethod;
     @Getter private Method setTagMethod;
     @Getter private Method getTagMethod;
-    @Getter private NmsNbtTagCompoundSupport nbtTagCompoundWrapper;
-    private NmsItemSupport nmsItemSupport;
+    @Getter private NmsNbtTagCompoundTank nbtTagCompoundWrapper;
+    private NmsItemTank nmsItemSupport;
 
-    public NmsItemStackSupport(VersionController.Version version) throws ClassNotFoundException, NoSuchMethodException {
+    public NmsItemStackTank(VersionController.Version version) throws ClassNotFoundException, NoSuchMethodException {
         String craftItemStackClassName = "org.bukkit.craftbukkit." + version.getVersion() + ".inventory.CraftItemStack";
         String nmsItemStackClassName = "net.minecraft.server." + version.getVersion() + ".ItemStack";
-        NmsNbtTagCompoundSupport nbtTagCompoundWrapper = new NmsNbtTagCompoundSupport("net.minecraft.server."+ version.getVersion() +".NBTTagCompound");
+        NmsNbtTagCompoundTank nbtTagCompoundWrapper = new NmsNbtTagCompoundTank("net.minecraft.server."+ version.getVersion() +".NBTTagCompound");
 
         Class<?> craftItemStack = Class.forName(craftItemStackClassName);
         Class<?> NMSItemStack;
         try { NMSItemStack = Class.forName(nmsItemStackClassName); }
         catch (Exception e) { NMSItemStack = Class.forName("net.minecraft.world.item.ItemStack"); }
-        try { nmsItemSupport = new NmsItemSupport("net.minecraft.server."+version.getVersion()+".Item", NMSItemStack); }
-        catch (Exception e) { nmsItemSupport = new NmsItemSupport("net.minecraft.world.item.Item", NMSItemStack); }
+        try { nmsItemSupport = new NmsItemTank("net.minecraft.server."+version.getVersion()+".Item", NMSItemStack); }
+        catch (Exception e) { nmsItemSupport = new NmsItemTank("net.minecraft.world.item.Item", NMSItemStack); }
         bukkitCopyMethod = craftItemStack.getDeclaredMethod("asBukkitCopy", NMSItemStack);
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
         try {
@@ -38,12 +37,12 @@ public class NmsItemStackSupport {
         catch (Exception e) { getTagMethod = NMSItemStack.getDeclaredMethod("u"); }
     }
 
-    public ItemStack asBukkitCopy(NmsItemStackWrapper nmsItemStack) throws InvocationTargetException, IllegalAccessException {
+    public ItemStack asBukkitCopy(ItemStackWrapper nmsItemStack) throws InvocationTargetException, IllegalAccessException {
         return (ItemStack) bukkitCopyMethod.invoke(null, nmsItemStack.getNmsItemStack());
     }
 
-    public NmsItemStackWrapper asNMSCopy(ItemStack itemStack) throws InvocationTargetException, IllegalAccessException {
-        return new NmsItemStackWrapper(nmsCopyMethod.invoke(null, itemStack), nmsItemSupport,this);
+    public ItemStackWrapper asNMSCopy(ItemStack itemStack) throws InvocationTargetException, IllegalAccessException {
+        return new ItemStackWrapper(nmsCopyMethod.invoke(null, itemStack), nmsItemSupport,this);
     }
 
 }

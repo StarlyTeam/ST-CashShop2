@@ -4,7 +4,7 @@ import net.starly.cashshop.CashShopMain;
 import net.starly.cashshop.repo.shop.CashShopRepository;
 import net.starly.cashshop.shop.STCashShop;
 import net.starly.cashshop.shop.container.STContainer;
-import net.starly.cashshop.shop.content.STCashShopItem;
+import net.starly.cashshop.shop.item.STCashShopItem;
 import net.starly.cashshop.shop.impl.CashShopImpl;
 import net.starly.cashshop.shop.settings.GlobalShopSettings;
 import net.starly.cashshop.util.ShopByteArrayUtility;

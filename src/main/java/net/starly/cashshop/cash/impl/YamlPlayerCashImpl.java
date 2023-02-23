@@ -2,7 +2,7 @@ package net.starly.cashshop.cash.impl;
 
 import net.starly.cashshop.CashShopMain;
 import net.starly.cashshop.cash.PlayerCash;
-import net.starly.cashshop.util.schedule.AsyncExecutors;
+import net.starly.cashshop.executor.AsyncExecutors;
 import net.starly.cashshop.util.JsonUtil;
 import org.bukkit.Bukkit;
 import java.io.BufferedWriter;

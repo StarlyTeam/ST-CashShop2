@@ -1,12 +1,9 @@
-package net.starly.cashshop;
+package net.starly.cashshop.util;
 
 import lombok.Getter;
-import lombok.NonNull;
+import net.starly.cashshop.CashShopMain;
 import net.starly.cashshop.exception.UnSupportedVersionException;
-import net.starly.cashshop.version.ItemStackUtility;
-import net.starly.cashshop.version.v1_12.ItemStackUtility12;
 import org.bukkit.Server;
-
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -40,16 +37,9 @@ public class VersionController {
         }
     }
     @Getter private Version version = null;
-    @Getter private ItemStackUtility itemStackUtility;
 
     private VersionController(Server server) throws UnSupportedVersionException, ClassNotFoundException {
         checkVersions(server);
-        switch (version) {
-            case v1_12_R1:
-                itemStackUtility = new ItemStackUtility12();
-                break;
-        }
-
         if(version == null) throw new UnSupportedVersionException(version.v);
     }
 

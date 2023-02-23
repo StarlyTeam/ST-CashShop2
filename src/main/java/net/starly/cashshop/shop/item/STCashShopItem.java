@@ -1,4 +1,4 @@
-package net.starly.cashshop.shop.content;
+package net.starly.cashshop.shop.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

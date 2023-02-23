@@ -1,17 +1,16 @@
-package net.starly.cashshop.version.nms.wrapper;
+package net.starly.cashshop.nms.wrapper;
 
 import lombok.Getter;
-import net.starly.cashshop.version.nms.support.NmsItemSupport;
+import net.starly.cashshop.nms.tank.NmsItemTank;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class NmsItemWrapper {
+public class ItemWrapper {
 
-    private NmsItemSupport support;
+    private NmsItemTank support;
     @Getter private Object Item;
 
-    public NmsItemWrapper(NmsItemSupport itemSupport, NmsItemStackWrapper nmsItemStackWrapper) {
+    public ItemWrapper(NmsItemTank itemSupport, ItemStackWrapper nmsItemStackWrapper) {
         try {
             support = itemSupport;
             Method getItemMethod;
@@ -24,7 +23,7 @@ public class NmsItemWrapper {
         }
     }
 
-    public String getUnlocalizedName(NmsItemStackWrapper nmsItemStack) {
+    public String getUnlocalizedName(ItemStackWrapper nmsItemStack) {
         try {
             return (String) support.getJMethod().invoke(Item, nmsItemStack.getNmsItemStack());
         } catch (Exception e) {

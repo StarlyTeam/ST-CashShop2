@@ -1,4 +1,4 @@
-package net.starly.cashshop.util.schedule;
+package net.starly.cashshop.executor;
 
 import net.starly.cashshop.database.ExceptionHandle;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;

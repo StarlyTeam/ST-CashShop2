@@ -1,7 +1,6 @@
 package net.starly.cashshop.shop;
 
-import net.starly.cashshop.shop.container.STContainer;
-import net.starly.cashshop.shop.content.STCashShopItem;
+import net.starly.cashshop.shop.item.STCashShopItem;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.BiConsumer;

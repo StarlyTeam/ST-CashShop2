@@ -1,6 +1,6 @@
 package net.starly.cashshop.database;
 
-import net.starly.cashshop.util.schedule.AsyncExecutors;
+import net.starly.cashshop.executor.AsyncExecutors;
 import net.starly.cashshop.util.Pair;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,4 +1,4 @@
-package net.starly.cashshop.shop.listener;
+package net.starly.cashshop.listener;
 
 import net.starly.cashshop.shop.container.STContainer;
 import org.bukkit.event.EventHandler;

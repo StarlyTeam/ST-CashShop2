@@ -3,7 +3,7 @@ package net.starly.cashshop.command.executor.sub;
 import net.starly.cashshop.CashShopMain;
 import net.starly.cashshop.cash.PlayerCash;
 import net.starly.cashshop.command.STSubCommand;
-import net.starly.cashshop.util.schedule.AsyncExecutors;
+import net.starly.cashshop.executor.AsyncExecutors;
 import net.starly.cashshop.message.MessageContext;
 import net.starly.cashshop.message.impl.CashMessageContextImpl;
 import net.starly.cashshop.util.Replacer;
