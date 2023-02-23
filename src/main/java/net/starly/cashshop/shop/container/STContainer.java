@@ -12,6 +12,7 @@ import net.starly.cashshop.shop.impl.CashShopImpl;
 import net.starly.cashshop.shop.settings.GlobalShopSettings;
 import net.starly.cashshop.shop.settings.PlayerHeadSetting;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
@@ -147,6 +148,8 @@ public abstract class STContainer implements InventoryHolder {
         if(cancel) event.setCancelled(true);
         InventoryClickEventWrapper wrapper = new InventoryClickEventWrapper(event, false);
         guiClick(wrapper);
+        ItemStack itemChecker = event.getCurrentItem();
+        if(itemChecker == null || itemChecker.getType().equals(Material.AIR)) return;
         if(!wrapper.isButtonCancelled() && slotMap.containsKey(wrapper.getRawSlot())) {
             STButton button = slotMap.get(wrapper.getRawSlot());
             button.execute(this, new ButtonClickEventWrapper(event, button));

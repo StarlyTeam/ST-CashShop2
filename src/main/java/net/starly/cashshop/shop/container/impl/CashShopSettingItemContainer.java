@@ -8,6 +8,7 @@ import net.starly.cashshop.shop.container.button.STButton;
 import net.starly.cashshop.shop.container.wrapper.InventoryClickEventWrapper;
 import net.starly.cashshop.shop.impl.CashShopImpl;
 import net.starly.cashshop.util.Replacer;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -63,6 +64,7 @@ public class CashShopSettingItemContainer extends STContainer {
                             shop.removeItem(index);
                             context.get(MessageContext.Type.DEFAULT, "systemMessage", new Replacer.ReplacerBuilder().appendSystemMessage("아이템 삭제 [slot:"+index+"]").build().getFunction()).send(wrapper.getPlayer());
                             shop.setClose(true);
+                            wrapper.getItemStack().setType(Material.AIR);
                             changed = true;
                             refresh();
                         } else if(wrapper.isRight()) {
