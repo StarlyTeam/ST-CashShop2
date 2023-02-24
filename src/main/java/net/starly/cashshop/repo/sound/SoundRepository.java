@@ -66,7 +66,7 @@ public class SoundRepository {
                 String templateName = ChatColor.translateAlternateColorCodes('&', config.getString("name"));
                 soundMap.put(key, new STSoundImpl(templateName, config.getStringList("sound-function")));
             } catch (Exception ignored) {
-                plugin.getLogger().warning(file.getName() + " 파일의 설정이 올바르지 않습니다.");
+                plugin.getLogger().warning("[" + plugin.getName() + "]"  + file.getName() + " 파일의 설정이 올바르지 않습니다.");
             }
         });
         soundKeyList = getSounds().stream().sorted().collect(Collectors.toList());

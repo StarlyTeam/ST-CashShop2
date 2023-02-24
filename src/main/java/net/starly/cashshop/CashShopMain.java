@@ -73,13 +73,13 @@ public class CashShopMain extends JavaPlugin {
 
         // SUPPORTS
         if (Bukkit.getPluginManager().getPlugin("Skript") == null)
-            Bukkit.getLogger().warning("Skript 가 없어 Skript 기능이 비활성화 됩니다.");
+            Bukkit.getLogger().warning("[" + plugin.getName() + "] Skript 가 없어 Skript 기능이 비활성화 됩니다.");
         else {
             try { Skript.registerAddon(this).loadClasses("net.starly.cashshop.support", "skript"); }
             catch (Exception e) { e.printStackTrace(); }
         }
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null)
-            Bukkit.getLogger().warning("PlaceholderAPI 가 없어 Placeholder 기능이 비활성화 됩니다.");
+            Bukkit.getLogger().warning("[" + plugin.getName() + "] PlaceholderAPI 가 없어 Placeholder 기능이 비활성화 됩니다.");
         else new CashExpansion(this).register();
     }
 

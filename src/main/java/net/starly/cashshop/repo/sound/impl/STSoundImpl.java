@@ -51,11 +51,11 @@ public class STSoundImpl implements STSound {
                         break;
                     }
                 } catch (NumberFormatException ex0) {
-                    plugin.getLogger().warning("사운드 "+templateName+" 의 설정 파일의 볼륨이나 피치값이 숫자가 아닙니다.");
+                    plugin.getLogger().warning("[" + plugin.getName() + "] 사운드 "+templateName+" 의 설정 파일의 볼륨이나 피치값이 숫자가 아닙니다.");
                 } catch (IndexOutOfBoundsException ex1) {
-                    plugin.getLogger().warning("사운드 "+templateName+" 의 설정 파일의 설정이 올바르지않습니다. ('sound-type,pitch,volume[,delay]')");
+                    plugin.getLogger().warning("[" + plugin.getName() + "] 사운드 "+templateName+" 의 설정 파일의 설정이 올바르지않습니다. ('sound-type,pitch,volume[,delay]')");
                 } catch (IllegalArgumentException e2) {
-                    plugin.getLogger().warning("사운드 " + templateName + " 의 설정 파일의 " + type + " 타입은 찾을 수 없는 타입이거나 해당 버전에 맞지 않습니다.");
+                    plugin.getLogger().warning("[" + plugin.getName() + "] 사운드 " + templateName + " 의 설정 파일의 " + type + " 타입은 찾을 수 없는 타입이거나 해당 버전에 맞지 않습니다.");
                 }
             }
         }
