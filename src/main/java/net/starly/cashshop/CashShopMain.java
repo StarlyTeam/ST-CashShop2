@@ -54,7 +54,7 @@ public class CashShopMain extends JavaPlugin {
         // INITIALIZING LANGUAGE
         ItemStackNameUtil.initializingLocale(getServer());
 
-        new Metrics(this, 12345); // TODO: 수정
+        new Metrics(this, 17798);
 
         // CONFIG
         stConfig = new Config("config", this);
