@@ -14,6 +14,10 @@ public class FormattingUtil {
         return cashFormat.format(cash) + CashMessageContextImpl.getInstance().getOnlyString(MessageContext.Type.DEFAULT, "suffix");
     }
 
+    public static String formattingLong(long value) {
+        return cashFormat.format(value);
+    }
+
     public static String formattingInteger(int integer) {
         return cashFormat.format(integer);
     }
