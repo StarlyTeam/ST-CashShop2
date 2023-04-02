@@ -40,9 +40,9 @@ public class CashShopMain extends JavaPlugin {
     @Override
     public void onEnable() {
         // DEPENDENCY
-        if (Bukkit.getPluginManager().getPlugin("ST-Core") == null) {
+        if (!isPluginEnabled("net.starly.core.StarlyCore")) {
             Bukkit.getLogger().warning("[" + plugin.getName() + "] ST-Core 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
-            Bukkit.getLogger().warning("[" + plugin.getName() + "] 다운로드 링크 : §fhttp://starly.kr/discord");
+            Bukkit.getLogger().warning("[" + plugin.getName() + "] 다운로드 링크 : §fhttp://starly.kr/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -72,14 +72,14 @@ public class CashShopMain extends JavaPlugin {
         loadConfiguration(false);
 
         // SUPPORTS
-        if (Bukkit.getPluginManager().getPlugin("Skript") == null)
-            Bukkit.getLogger().warning("[" + plugin.getName() + "] Skript 가 없어 Skript 기능이 비활성화 됩니다.");
+        if (!isPluginEnabled("ch.njol.skript.Skript"))
+            Bukkit.getLogger().warning("[" + plugin.getName() + "] Skript 플러그인이 존재하지 않아 Skript 기능이 비활성화 됩니다.");
         else {
             try { Skript.registerAddon(this).loadClasses("net.starly.cashshop.support", "skript"); }
             catch (Exception e) { e.printStackTrace(); }
         }
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null)
-            Bukkit.getLogger().warning("[" + plugin.getName() + "] PlaceholderAPI 가 없어 Placeholder 기능이 비활성화 됩니다.");
+        if (!isPluginEnabled("me.clip.placeholderapi.PlaceholderAPIPlugin"))
+            Bukkit.getLogger().warning("[" + plugin.getName() + "] PlaceholderAPI 플러그인이 존재하지 않아 PAPI 기능이 비활성화 됩니다.");
         else new CashExpansion(this).register();
     }
 
@@ -115,5 +115,14 @@ public class CashShopMain extends JavaPlugin {
 
     public static CashShopMain getPlugin() {
         return plugin;
+    }
+
+    private boolean isPluginEnabled(String path) {
+        try {
+            Class.forName(path);
+            return true;
+        } catch (NoClassDefFoundError ignored) {
+        } catch (Exception ex) { ex.printStackTrace(); }
+        return false;
     }
 }
