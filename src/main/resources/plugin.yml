@@ -1,7 +1,7 @@
 name: ST-CashShop
 main: net.starly.cashshop.CashShopMain
 author: Starly Team
-website: http://starly.kr/discord
+website: http://starly.kr/
 
 description: CashShop Plugin.
 
@@ -10,8 +10,9 @@ softdepend:
   - Skript
   - PlaceholderAPI
 
-version: 1.0.1
+version: 1.0.2
 api-version: 1.13
+
 permissions:
   starly.cashshop.npc:
     description: npc command
