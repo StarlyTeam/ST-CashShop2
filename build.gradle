@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'net.starly.cashshop'
-version '1.0.3'
+version '1.0.4'
 
 repositories {
     mavenCentral()
@@ -47,17 +47,10 @@ dependencies {
     compileOnly "me.clip:placeholderapi:2.11.1"
 }
 
-tasks.withType(JavaCompile).configureEach {
+tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
 jar {
     finalizedBy shadowJar
 }
-
-task copyJar(type: Copy) {
-    from 'build\\libs\\ST-CashShop-1.0-all.jar'
-    into "D:\\MCServers\\st-test\\plugins"
-}
-
-build.dependsOn copyJar

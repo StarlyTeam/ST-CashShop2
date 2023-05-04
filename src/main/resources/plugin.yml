@@ -10,7 +10,7 @@ softdepend:
   - Skript
   - PlaceholderAPI
 
-version: 1.0.3
+version: 1.0.4
 api-version: 1.13
 
 permissions:
@@ -41,6 +41,6 @@ permissions:
 
 commands:
   cash:
-    aliases: [캐시]
+    aliases: [ 캐시 ]
   cashshop:
-    aliases: [캐시상점]
+    aliases: [ 캐시상점 ]

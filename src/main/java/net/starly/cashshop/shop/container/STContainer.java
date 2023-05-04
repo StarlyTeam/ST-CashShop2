@@ -114,24 +114,19 @@ public abstract class STContainer implements InventoryHolder {
 
     public void open(Player player) { this.open(player, false); }
     public void open(Player player, boolean playSound) {
-        try {
-            plugin.getServer().getScheduler().runTaskLater(plugin, ()->{
-                InventoryView openInventory = player.getOpenInventory();
-                if(!openInventory.getType().equals(InventoryType.PLAYER) && !openInventory.getType().equals(InventoryType.CREATIVE)) {
-                    player.closeInventory();
-                    plugin.getServer().getScheduler().runTaskLater(plugin, () -> open(server.getPlayer(player.getUniqueId()), playSound), 1L);
-                } else {
-                    viewer = player;
-                    openedInitializing();
-                    player.openInventory(inventory);
-                    registerPlayer(starlyShopKey, player);
-                    if(playSound) {
-                        STSound sound = SoundRepository.getInstance().getSound(shop.getSoundKey());
-                        if (sound != null) sound.playSound(player);
-                    }
-                }
-            }, 1L);
-        } catch (Exception e) { player.closeInventory(); }
+
+        InventoryView openInventory = player.getOpenInventory();
+
+        if (!openInventory.getType().equals(InventoryType.PLAYER)) {
+            viewer = player;
+            openedInitializing();
+            player.openInventory(inventory);
+            registerPlayer(starlyShopKey, player);
+            if (playSound) {
+                STSound sound = SoundRepository.getInstance().getSound(shop.getSoundKey());
+                if (sound != null) sound.playSound(player);
+            }
+        }
     }
 
     protected void openedInitializing() {}
