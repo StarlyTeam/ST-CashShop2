@@ -64,14 +64,14 @@ shop:
       # 일반 클릭 타입을 지정합니다. ( LEFT, RIGHT, ALL )
       type: ALL
       # 일반 클릭 시 구매 될 아이템의 수를 정합니다. ( max-full 64 )
-      amount: 2
+      amount: 1
       # 로어에 {click-type} 을 넣으면 표시 될 이름을 설정합니다.
       text: '&a클릭&r'
     shift-click:
       # 쉬프트-클릭 타입을 지정합니다. ( LEFT, RIGHT, ALL )
       type: ALL
       # 일반 클릭 시 구매 될 아이템의 수를 정합니다. ( max-full 64 )
-      amount: 30
+      amount: 64
       # 로어에 {shift-click-type} 을 넣으면 표시 될 이름을 설정합니다.
       text: '&6쉬프트+클릭&r'
 

@@ -21,6 +21,11 @@ public class ShopListener implements Listener {
     public void onInteractAtEntity(PlayerInteractAtEntityEvent event) {
         Player player = event.getPlayer();
         if(event.getHand() != null && event.getHand().equals(EquipmentSlot.HAND)) {
+            if (player.getOpenInventory() != null) {
+                InventoryView openInventory = player.getOpenInventory();
+                if(!openInventory.getType().equals(InventoryType.PLAYER) && !openInventory.getType().equals(InventoryType.CREATIVE))
+                    return;
+            }
             Entity entity = event.getRightClicked();
             if(entity.getCustomName() == null) return;
             CashShopImpl shop = CashShopMain.getPlugin().getCashShopRepository().getShopAtNpcName(entity.getCustomName());

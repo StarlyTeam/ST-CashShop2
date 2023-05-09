@@ -9,7 +9,6 @@ import net.starly.cashshop.shop.container.STContainer;
 import net.starly.cashshop.shop.container.button.STButton;
 import net.starly.cashshop.shop.container.wrapper.InventoryClickEventWrapper;
 import net.starly.cashshop.shop.impl.CashShopImpl;
-import net.starly.cashshop.util.Pair;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventPriority;
