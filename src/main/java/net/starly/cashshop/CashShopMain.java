@@ -26,6 +26,8 @@ import net.starly.core.data.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Logger;
+
 public class CashShopMain extends JavaPlugin {
     private static CashShopMain plugin;
 

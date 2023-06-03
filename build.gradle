@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'net.starly.cashshop'
-version '1.0.4'
+version '1.0.5'
 
 repositories {
     mavenCentral()
@@ -53,4 +53,11 @@ tasks.withType(JavaCompile) {
 
 jar {
     finalizedBy shadowJar
+}
+
+tasks.shadowJar.doLast {
+    copy {
+        from "build\\libs\\ST-CashShop-1.0.5-all.jar"
+        into "C:\\Users\\PC\\daeyeong\\minecraft\\1.19.4 [Purpur]\\plugins"
+    }
 }
