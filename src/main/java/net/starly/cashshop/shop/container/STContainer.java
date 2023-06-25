@@ -118,7 +118,7 @@ public abstract class STContainer implements InventoryHolder {
 
         try {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                if (!player.getOpenInventory().getType().equals(InventoryType.PLAYER) && !player.getOpenInventory().getType().equals(InventoryType.CREATIVE)) {
+                if (player.getOpenInventory().getType() != InventoryType.CRAFTING) {
                     player.closeInventory();
                 }
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
@@ -134,7 +134,6 @@ public abstract class STContainer implements InventoryHolder {
             }, 1L);
         } catch (Exception e) { e.printStackTrace(); }
     }
-
     protected void openedInitializing() {}
 
     protected void headItemSetting() {
