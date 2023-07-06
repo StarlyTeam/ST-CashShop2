@@ -22,11 +22,13 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 import java.util.Map;
 
 public class CashShopContainer extends STContainer {
 
     private static final CashShopMain plugin = CashShopMain.getPlugin();
+
     public CashShopContainer(String title, CashShopImpl shop) {
         super(shop.getLine() * 9, title, true, shop);
     }
@@ -39,7 +41,7 @@ public class CashShopContainer extends STContainer {
     @Override
     protected void guiClose(InventoryCloseEvent event) {
         STSound sound = SoundRepository.getInstance().getSound(shop.getCloseSoundKey());
-        if(sound!=null) sound.playSound((Player) event.getPlayer());
+        if (sound != null) sound.playSound((Player) event.getPlayer());
     }
 
     @Override
@@ -47,7 +49,10 @@ public class CashShopContainer extends STContainer {
 
     }
 
-    @Override protected void openedInitializing() { headItemSetting(); }
+    @Override
+    protected void openedInitializing() {
+        headItemSetting();
+    }
 
     @Override
     protected void initializingInventory(Inventory inventory) {
@@ -55,25 +60,24 @@ public class CashShopContainer extends STContainer {
         GlobalShopSettings setting = GlobalShopSettings.getInstance();
         ItemSetting itemSetting = setting.getItemSetting();
         PlayerHeadSetting headSetting = setting.getHeadSetting();
-        shop.forEachIndexed((index, item)-> {
-            if(item == null) return;
-            if(headSetting != null && index == headSetting.getSlot()) return;
+        shop.forEachIndexed((index, item) -> {
+            if (item == null) return;
+            if (headSetting != null && index == headSetting.getSlot()) return;
             new STButton.STButtonBuilder(item.getSellingItem())
                     .setCleanable(false)
-                    .setClickFunction((wrapper, container)-> {
+                    .setClickFunction((wrapper, container) -> {
                         Player player = wrapper.getPlayer();
-                        if(item.getCost() < 0) {
+                        if (item.getCost() < 0) {
                             // empty line
-                        }
-                        else {
-                            if(item.getNowAmount() <= 0 && item.getAmount() > 0) {
+                        } else {
+                            if (item.getNowAmount() <= 0 && item.getAmount() > 0) {
                                 context.get(MessageContext.Type.ERROR, "notEnoughAmount").send(player);
                                 STSound sound = SoundRepository.getInstance().getSound(shop.getFailSoundKey());
-                                if(sound != null) sound.playSound(player);
+                                if (sound != null) sound.playSound(player);
                                 return;
                             }
                             int buyAmount = 0;
-                            if(wrapper.isShift()) {
+                            if (wrapper.isShift()) {
                                 switch (itemSetting.getShift().getType()) {
                                     case ALL:
                                         buyAmount = itemSetting.getShift().getAmount();
@@ -98,37 +102,36 @@ public class CashShopContainer extends STContainer {
                                         break;
                                 }
                             }
-                            if(buyAmount <= 0) return;
-                            if(item.isLimited()) buyAmount = 1;
+                            if (buyAmount <= 0) return;
+                            if (item.isLimited()) buyAmount = 1;
                             long cost = item.getCost() * buyAmount;
                             ItemStack stack = item.getOriginal().clone();
                             stack.setAmount(stack.getAmount() * buyAmount);
                             PlayerCash cash = plugin.getPlayerCashRepository().getPlayerCash(player.getUniqueId());
-                            if(cash.getCash() < cost) {
+                            if (cash.getCash() < cost) {
                                 long l = cost - cash.getCash();
                                 context.get(MessageContext.Type.ERROR, "notEnoughCash", new Replacer.ReplacerBuilder().append(l, true).build().getFunction()).send(player);
                                 STSound sound = SoundRepository.getInstance().getSound(shop.getFailSoundKey());
-                                if(sound != null) sound.playSound(player);
+                                if (sound != null) sound.playSound(player);
                                 return;
                             }
                             Map<Integer, ItemStack> map = player.getInventory().addItem(stack);
                             String message;
-                            if(map.isEmpty()) {
-                                if(buyAmount == 1) message = context.get(MessageContext.Type.DEFAULT, "buy").getText();
+                            if (map.isEmpty()) {
+                                if (buyAmount == 1) message = context.get(MessageContext.Type.DEFAULT, "buy").getText();
                                 else message = context.get(MessageContext.Type.DEFAULT, "buyMany").getText();
                             } else {
-                                for(ItemStack i : map.values()) buyAmount -= i.getAmount();
-                                if(buyAmount <= 0) {
+                                for (ItemStack i : map.values()) buyAmount -= i.getAmount();
+                                if (buyAmount <= 0) {
                                     context.get(MessageContext.Type.ERROR, "notEnoughInventorySlot").send(player);
                                     STSound sound = SoundRepository.getInstance().getSound(shop.getFailSoundKey());
-                                    if(sound != null) sound.playSound(player);
+                                    if (sound != null) sound.playSound(player);
                                     return;
-                                }
-                                else message = context.get(MessageContext.Type.DEFAULT, "buySome").getText();
+                                } else message = context.get(MessageContext.Type.DEFAULT, "buySome").getText();
                             }
 
                             cost = buyAmount * item.getCost();
-                            cash.subCash("상점/"+ChatColor.stripColor(shop.getName()) + "/" + ItemStackNameUtil.getItemName(stack) +" (x" +buyAmount+")" , PlayerCash.Type.SUB, cost).save(true);
+                            cash.subCash("상점/" + ChatColor.stripColor(shop.getName()) + "/" + ItemStackNameUtil.getItemName(stack) + " (x" + buyAmount + ")", PlayerCash.Type.SUB, cost).save(true);
 
                             message = message.replace("{item}", ItemStackNameUtil.getItemName(stack))
                                     .replace("{useCash}", FormattingUtil.formattingCash(cost))
@@ -136,8 +139,8 @@ public class CashShopContainer extends STContainer {
                                     .replace("{amount}", buyAmount + "");
                             player.sendMessage(message);
                             STSound sound = SoundRepository.getInstance().getSound(shop.getBuySoundKey());
-                            if(sound != null) sound.playSound(player);
-                            if(item.isLimited()) item.setNowAmount(item.getNowAmount() - buyAmount);
+                            if (sound != null) sound.playSound(player);
+                            if (item.isLimited()) item.setNowAmount(item.getNowAmount() - buyAmount);
                             refresh();
                         }
                     }).build().setSlot(this, index);

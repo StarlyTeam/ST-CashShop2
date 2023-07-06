@@ -47,20 +47,11 @@ public class CashShopMain extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // DEPENDENCY
-        if (!isPluginEnabled("net.starly.core.StarlyCore")) {
-            Bukkit.getLogger().warning("[" + getName() + "] ST-Core 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
-            Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : §fhttp://starly.kr/");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
-
         // VERSION CONTROL
         VersionController.getInstance();
 
         // INITIALIZING LANGUAGE
-        ItemStackNameUtil.initializingLocale(getServer());
+        ItemStackNameUtil.initializingLocale();
 
         new Metrics(this, 17798);
 
@@ -81,7 +72,7 @@ public class CashShopMain extends JavaPlugin {
 
         // SUPPORTS
         if (!isPluginEnabled("ch.njol.skript.Skript"))
-            Bukkit.getLogger().warning("[" + plugin.getName() + "] Skript 플러그인이 존재하지 않아 Skript 기능이 비활성화 됩니다.");
+            getServer().getLogger().warning("[" + plugin.getName() + "] Skript 플러그인이 존재하지 않아 Skript 기능이 비활성화 됩니다.");
         else {
             try {
                 Skript.registerAddon(this).loadClasses("net.starly.cashshop.support", "skript");
@@ -90,7 +81,7 @@ public class CashShopMain extends JavaPlugin {
             }
         }
         if (!isPluginEnabled("me.clip.placeholderapi.PlaceholderAPIPlugin"))
-            Bukkit.getLogger().warning("[" + plugin.getName() + "] PlaceholderAPI 플러그인이 존재하지 않아 PAPI 기능이 비활성화 됩니다.");
+            getServer().getLogger().warning("[" + plugin.getName() + "] PlaceholderAPI 플러그인이 존재하지 않아 PAPI 기능이 비활성화 됩니다.");
         else new CashExpansion(this).register();
     }
 

@@ -10,6 +10,7 @@ import net.starly.core.jb.version.nms.wrapper.ItemWrapper;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -23,8 +24,8 @@ public class ItemStackNameUtil {
     private static final Splitter splitter = Splitter.on('=').limit(2);
     private static Map<String, String> languageMap = new HashMap<>();
 
-    public static void initializingLocale(Server server) {
-        if(!VersionController.getInstance().getVersion().isHighVersion()) {
+    public static void initializingLocale() {
+        if (!VersionController.getInstance().getVersion().isHighVersion()) {
             languageMap = new HashMap<>();
             try (InputStream var1 = CashShopMain.getPlugin().getResource("ko_kr_12.lang")) {
                 for (String var3 : IOUtils.readLines(var1, StandardCharsets.UTF_8)) {
@@ -39,32 +40,23 @@ public class ItemStackNameUtil {
                 }
             } catch (Exception ignored) {
             }
-        } else {
             try (InputStream var1 = CashShopMain.getPlugin().getResource("ko_kr_19.json")) {
                 Gson gson = new Gson();
-                Reader reader = new InputStreamReader(var1,StandardCharsets.UTF_8);
+                Reader reader = new InputStreamReader(var1, StandardCharsets.UTF_8);
                 languageMap = gson.fromJson(reader, Map.class);
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
-            }
+            } catch (Exception ignored) {}
+
+            try (InputStream var1 = CashShopMain.getPlugin().getResource("ko_kr_20.json")) {
+                Gson gson = new Gson();
+                Reader reader = new InputStreamReader(var1, StandardCharsets.UTF_8);
+                languageMap = gson.fromJson(reader, Map.class);
+            } catch (Exception ignored) {}
         }
     }
 
     public static String getItemName(ItemStack itemStack) {
-        if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
             return itemStack.getItemMeta().getDisplayName();
-
-        try {
-            ItemStackWrapper nmsItemStack = NmsItemStackUtil.getInstance().asNMSCopy(itemStack);
-            ItemWrapper item = nmsItemStack.getItem();
-            String unlocalizedName = item.getUnlocalizedName(nmsItemStack);
-            if(!VersionController.getInstance().getVersion().isHighVersion()) unlocalizedName += ".name";
-            if (languageMap.containsKey(unlocalizedName))
-                return languageMap.get(unlocalizedName);
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
-        }
         return itemStack.getType().name().toLowerCase().replace("_", " ");
     }
-
 }

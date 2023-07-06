@@ -5,45 +5,24 @@ plugins {
 }
 
 group 'net.starly.cashshop'
-version '1.0.5'
+version '1.0.7'
 
 repositories {
     mavenCentral()
-    maven {
-        url = "http://starly.kr:8083/repository/maven-public/"
-        allowInsecureProtocol = true
-    }
-    maven {
-        url = "https://repo.skriptlang.org/releases"
-    }
-    maven {
-        url = "https://repo.extendedclip.com/content/repositories/placeholderapi"
-    }
+    maven { url = "http://starly.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
+    maven { url = "https://repo.skriptlang.org/releases" }
+    maven { url = "https://repo.extendedclip.com/content/repositories/placeholderapi" }
 }
 
 dependencies {
-    //JAVA DEPENDENCIES
     compileOnly "org.jetbrains:annotations:23.0.0"
-
-    //BUKKIT DEPENDENCIES
     compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
-
-    // OTHER DEPENDENCIES
-    compileOnly "net.starly.core:ST-Core:1.7.7"
-
-    // LOMBOK
+    compileOnly "net.starly.core:ST-Core:1.8.1"
     compileOnly "org.projectlombok:lombok:1.18.26"
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
-
     api "org.apache.commons:commons-lang3:3.0"
-
-    // HIKARI_CP
     api group: 'com.zaxxer', name: 'HikariCP', version: '3.4.5'
-
-    // SKRIPT
     compileOnly "com.github.SkriptLang:Skript:2.6.3"
-
-    // PLACE_HOLDER
     compileOnly "me.clip:placeholderapi:2.11.1"
 }
 
@@ -51,13 +30,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-jar {
-    finalizedBy shadowJar
-}
-
-tasks.shadowJar.doLast {
-    copy {
-        from "build\\libs\\ST-CashShop-1.0.5-all.jar"
-        into "C:\\Users\\PC\\daeyeong\\minecraft\\1.19.4 [Purpur]\\plugins"
-    }
+shadowJar {
+    archiveFileName = 'ST-CashShop.jar'
+    destinationDirectory = file('C:\\Users\\PC\\스탈리\\개발서버\\[ 1.20.1 ]\\plugins')
 }
