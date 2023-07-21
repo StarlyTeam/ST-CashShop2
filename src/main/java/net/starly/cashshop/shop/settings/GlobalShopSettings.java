@@ -5,8 +5,8 @@ import net.starly.cashshop.shop.impl.CashShopImpl;
 import net.starly.core.data.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.stream.Collectors;
 
 public class GlobalShopSettings {

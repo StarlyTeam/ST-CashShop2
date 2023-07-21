@@ -8,8 +8,8 @@ import net.starly.cashshop.message.MessageContext;
 import net.starly.cashshop.message.impl.CashMessageContextImpl;
 import net.starly.cashshop.message.impl.CashShopMessageContextImpl;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.function.BiConsumer;
 
 @Data
