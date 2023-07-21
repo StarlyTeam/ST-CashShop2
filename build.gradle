@@ -16,17 +16,22 @@ repositories {
 
 dependencies {
     compileOnly "org.jetbrains:annotations:23.0.0"
-    compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
-    compileOnly "net.starly.core:ST-Core:1.8.1"
     compileOnly "org.projectlombok:lombok:1.18.26"
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor "org.projectlombok:lombok:1.18.26"
+
     api "org.apache.commons:commons-lang3:3.0"
-    api group: 'com.zaxxer', name: 'HikariCP', version: '3.4.5'
+    api "com.google.code.gson:gson:2.10.1"
+    api group: "com.zaxxer", name: "HikariCP", version: "3.4.5"
+
+    compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
+    compileOnly files("api/authlib.jar")
+
+    compileOnly "net.starly.core:ST-Core:1.8.1"
     compileOnly "com.github.SkriptLang:Skript:2.6.3"
     compileOnly "me.clip:placeholderapi:2.11.1"
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
