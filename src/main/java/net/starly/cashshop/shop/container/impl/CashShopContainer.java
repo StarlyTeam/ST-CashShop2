@@ -70,6 +70,7 @@ public class CashShopContainer extends STContainer {
                         if (item.getCost() < 0) {
                             // empty line
                         } else {
+                            // TODO: 판매 로직
                             if (item.getNowAmount() <= 0 && item.getAmount() > 0) {
                                 context.get(MessageContext.Type.ERROR, "notEnoughAmount").send(player);
                                 STSound sound = SoundRepository.getInstance().getSound(shop.getFailSoundKey());
