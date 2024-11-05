@@ -1,8 +1,6 @@
 package net.starly.cashshop.listener;
 
 import net.starly.cashshop.CashShopMain;
-import net.starly.cashshop.message.MessageContext;
-import net.starly.cashshop.message.impl.CashShopMessageContextImpl;
 import net.starly.cashshop.shop.container.impl.CashShopContainer;
 import net.starly.cashshop.shop.impl.CashShopImpl;
 import net.starly.cashshop.shop.settings.GlobalShopSettings;
@@ -13,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.InventoryView;
 
 public class ShopListener implements Listener {
 

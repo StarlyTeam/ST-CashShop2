@@ -1,6 +1,6 @@
 package net.starly.cashshop.util;
 
-public class Pair<F,S> {
+public class Pair<F, S> {
 
     private F first;
     private S second;
@@ -10,13 +10,18 @@ public class Pair<F,S> {
         this.second = second;
     }
 
-    public F getFirst() { return first; }
-    public S getSecond() { return second; }
+    public F getFirst() {
+        return first;
+    }
+
+    public S getSecond() {
+        return second;
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Pair<?, ?>) {
-            Pair<?,?> other = (Pair<?,?>) obj;
+        if (obj instanceof Pair<?, ?>) {
+            Pair<?, ?> other = (Pair<?, ?>) obj;
             return first.equals(other.first) && second.equals(other.second);
         }
         return false;
@@ -26,7 +31,7 @@ public class Pair<F,S> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (first == null? 0 : first.hashCode());
+        result = prime * result + (first == null ? 0 : first.hashCode());
         result = prime * result + (second == null ? 0 : second.hashCode());
         return result;
     }

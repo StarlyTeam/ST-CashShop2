@@ -4,8 +4,8 @@ import net.starly.cashshop.CashShopMain;
 import net.starly.cashshop.repo.shop.CashShopRepository;
 import net.starly.cashshop.shop.STCashShop;
 import net.starly.cashshop.shop.container.STContainer;
-import net.starly.cashshop.shop.item.STCashShopItem;
 import net.starly.cashshop.shop.impl.CashShopImpl;
+import net.starly.cashshop.shop.item.STCashShopItem;
 import net.starly.cashshop.shop.settings.GlobalShopSettings;
 import net.starly.cashshop.util.ShopByteArrayUtility;
 import net.starly.core.data.Config;
@@ -20,24 +20,29 @@ public class CashShopRepositoryImpl implements CashShopRepository {
 
     public static final File shopFolder = new File(CashShopMain.getPlugin().getDataFolder(), "shops");
     private final Map<String, CashShopImpl> cashShopMap = new HashMap<>();
-    static { if(!shopFolder.exists()) shopFolder.mkdirs(); }
+
+    static {
+        if (!shopFolder.exists()) shopFolder.mkdirs();
+    }
 
     @Override
     public void initializing(Config config) {
-        for(File file : Arrays.stream(Objects.requireNonNull(shopFolder.listFiles())).filter(it->it.getName().endsWith(".bin")).collect(Collectors.toList())) {
+        for (File file : Arrays.stream(Objects.requireNonNull(shopFolder.listFiles())).filter(it -> it.getName().endsWith(".bin")).collect(Collectors.toList())) {
             String shopName = file.getName();
             shopName = shopName.substring(0, shopName.length() - 4);
-            try(FileInputStream stream = new FileInputStream(file)) {
+            try (FileInputStream stream = new FileInputStream(file)) {
                 byte[] data = new byte[(int) file.length()];
                 stream.read(data);
                 cashShopMap.put(shopName, ShopByteArrayUtility.fromByteArray(data));
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public List<String> getShopNames() {
-        return cashShopMap.keySet().stream().map(it->it.replace(" ", "_")).collect(Collectors.toList());
+        return cashShopMap.keySet().stream().map(it -> it.replace(" ", "_")).collect(Collectors.toList());
     }
 
     public List<STCashShop> getShops() {
@@ -47,7 +52,7 @@ public class CashShopRepositoryImpl implements CashShopRepository {
     @Override
     public CashShopImpl getShop(String shopName) {
         shopName = ChatColor.stripColor(shopName).replace("_", " ");
-        if(cashShopMap.containsKey(shopName)) return cashShopMap.get(shopName);
+        if (cashShopMap.containsKey(shopName)) return cashShopMap.get(shopName);
         return null;
     }
 
@@ -56,7 +61,7 @@ public class CashShopRepositoryImpl implements CashShopRepository {
         return cashShopMap
                 .entrySet()
                 .stream()
-                .filter((it)->it.getValue().getNpc().equals(npcName))
+                .filter((it) -> it.getValue().getNpc().equals(npcName))
                 .findFirst()
                 .map(Map.Entry::getValue)
                 .orElse(null);
@@ -65,7 +70,7 @@ public class CashShopRepositoryImpl implements CashShopRepository {
     @Override
     public boolean registerShop(String shopName, int line) {
         shopName = ChatColor.translateAlternateColorCodes('&', shopName.replace("_", " "));
-        if(cashShopMap.containsKey(ChatColor.stripColor(shopName))) return false;
+        if (cashShopMap.containsKey(ChatColor.stripColor(shopName))) return false;
         cashShopMap.put(ChatColor.stripColor(shopName), new CashShopImpl("", shopName, line, true, null, null, null, null, new STCashShopItem[line * 9]).save(true));
         return true;
     }
@@ -76,7 +81,7 @@ public class CashShopRepositoryImpl implements CashShopRepository {
         String stripName = ChatColor.stripColor(shop.getName());
         cashShopMap.remove(stripName);
         File file = new File(shopFolder, stripName + ".bin");
-        if(file.exists()) file.delete();
+        if (file.exists()) file.delete();
     }
 
 }

@@ -2,6 +2,7 @@ package net.starly.cashshop.executor;
 
 import net.starly.cashshop.database.ExceptionHandle;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -10,8 +11,9 @@ import java.util.logging.Logger;
 public class AsyncExecutors {
 
     private static ExecutorService service = null;
+
     public static ExecutorService getService() {
-        if(service == null)
+        if (service == null)
             service = Executors.newFixedThreadPool(
                     Runtime.getRuntime().availableProcessors(),
                     (
@@ -26,10 +28,12 @@ public class AsyncExecutors {
         return service;
     }
 
-    public static void run(Runnable runnable) { getService().execute(new ExceptionHandle(runnable)); }
+    public static void run(Runnable runnable) {
+        getService().execute(new ExceptionHandle(runnable));
+    }
 
     public static void shutdown() {
-        if(service != null && service.isTerminated())
+        if (service != null && service.isTerminated())
             service.shutdown();
     }
 

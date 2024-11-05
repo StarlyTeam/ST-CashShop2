@@ -28,19 +28,20 @@ public class YamlPlayerCashRepositoryImpl implements PlayerCashRepository {
         JavaPlugin plugin = CashShopMain.getPlugin();
         playersFolder = new File(plugin.getDataFolder(), "players");
         logFolder = new File(plugin.getDataFolder(), "logs");
-        if(!playersFolder.exists()) playersFolder.mkdirs();
-        if(!logFolder.exists()) logFolder.mkdirs();
-        for(File file: Objects.requireNonNull(playersFolder.listFiles())) {
+        if (!playersFolder.exists()) playersFolder.mkdirs();
+        if (!logFolder.exists()) logFolder.mkdirs();
+        for (File file : Objects.requireNonNull(playersFolder.listFiles())) {
             YamlPlayerCashImpl impl = JsonUtil.fromJsonFile(file, YamlPlayerCashImpl.class);
-            if(impl != null) cashMap.put(impl.getOwner(), new YamlPlayerCashImpl(impl.getOwner(), impl.getCash(), impl.getId()));
+            if (impl != null)
+                cashMap.put(impl.getOwner(), new YamlPlayerCashImpl(impl.getOwner(), impl.getCash(), impl.getId()));
         }
-        if(saveTask == null)
+        if (saveTask == null)
             saveTask = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this::saveAll, 1200, 1200);
     }
 
     @Override
     public PlayerCash getPlayerCash(UUID uniqueId) {
-        return cashMap.computeIfAbsent(uniqueId, (it)-> {
+        return cashMap.computeIfAbsent(uniqueId, (it) -> {
             YamlPlayerCashImpl impl = new YamlPlayerCashImpl(uniqueId, 0, -1);
             impl.load();
             return impl;
@@ -49,7 +50,7 @@ public class YamlPlayerCashRepositoryImpl implements PlayerCashRepository {
 
     @Override
     public PlayerCash getPlayerCash(OfflinePlayer player) {
-        if(cashMap.containsKey(player.getUniqueId())) return getPlayerCash(player.getUniqueId());
+        if (cashMap.containsKey(player.getUniqueId())) return getPlayerCash(player.getUniqueId());
         return null;
     }
 
@@ -65,7 +66,7 @@ public class YamlPlayerCashRepositoryImpl implements PlayerCashRepository {
 
     @Override
     public void close() {
-        if(saveTask != null) saveTask.cancel();
+        if (saveTask != null) saveTask.cancel();
         saveTask = null;
         saveAll();
     }

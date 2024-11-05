@@ -12,13 +12,16 @@ import java.util.function.Function;
 public class CashMessageContextImpl implements MessageContext {
 
     private static CashMessageContextImpl instance;
+
     public static CashMessageContextImpl getInstance() {
-        if(instance == null) instance = new CashMessageContextImpl();
+        if (instance == null) instance = new CashMessageContextImpl();
         return instance;
     }
 
     private final Map<Pair<Type, String>, String> map = new HashMap<>();
-    private CashMessageContextImpl() {}
+
+    private CashMessageContextImpl() {
+    }
 
     @Override
     public STMessage get(Type type, String key, String def) {
@@ -26,10 +29,14 @@ public class CashMessageContextImpl implements MessageContext {
     }
 
     @Override
-    public STMessage get(Type type, String key) { return get(type, key, ""); }
+    public STMessage get(Type type, String key) {
+        return get(type, key, "");
+    }
 
     @Override
-    public String getOnlyString(Type type, String key) { return map.getOrDefault(new Pair<>(Type.DEFAULT, key), ""); }
+    public String getOnlyString(Type type, String key) {
+        return map.getOrDefault(new Pair<>(Type.DEFAULT, key), "");
+    }
 
     @Override
     public STMessage get(Type type, String key, String def, Function<String, String> replacer) {
@@ -47,6 +54,8 @@ public class CashMessageContextImpl implements MessageContext {
     }
 
     @Override
-    public void reset() { map.clear(); }
+    public void reset() {
+        map.clear();
+    }
 
 }

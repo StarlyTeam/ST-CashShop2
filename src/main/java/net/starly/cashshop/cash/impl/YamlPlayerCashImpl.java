@@ -5,6 +5,7 @@ import net.starly.cashshop.cash.PlayerCash;
 import net.starly.cashshop.executor.AsyncExecutors;
 import net.starly.cashshop.util.JsonUtil;
 import org.bukkit.Bukkit;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -20,20 +21,34 @@ public class YamlPlayerCashImpl implements PlayerCash {
     private final UUID uniqueId;
     private final int id;
     private boolean changed = false;
-    public Boolean isChanged() { return changed; }
 
-    public YamlPlayerCashImpl(UUID uniqueId, int id) { this(uniqueId, 0, id); }
+    public Boolean isChanged() {
+        return changed;
+    }
+
+    public YamlPlayerCashImpl(UUID uniqueId, int id) {
+        this(uniqueId, 0, id);
+    }
+
     public YamlPlayerCashImpl(UUID uniqueId, long cash, int id) {
         this.uniqueId = uniqueId;
         this.cash = cash;
         this.id = id;
     }
 
-    @Override public int getId() { return id; }
+    @Override
+    public int getId() {
+        return id;
+    }
 
-    @Override public UUID getOwner() { return uniqueId; }
+    @Override
+    public UUID getOwner() {
+        return uniqueId;
+    }
 
-    public File getSaveFile() { return new File(CashShopMain.getPlugin().getDataFolder(), "players/"+uniqueId+".json"); }
+    public File getSaveFile() {
+        return new File(CashShopMain.getPlugin().getDataFolder(), "players/" + uniqueId + ".json");
+    }
 
     @Override
     public String getOwnerName() {
@@ -47,8 +62,8 @@ public class YamlPlayerCashImpl implements PlayerCash {
 
     @Override
     public PlayerCash setCash(String source, Type type, long cash) {
-        if(cash < 0) cash = 0;
-        if(cash == this.cash) return this;
+        if (cash < 0) cash = 0;
+        if (cash == this.cash) return this;
         this.cash = cash;
         changed = true;
         writeLog(Type.SET, source, cash);
@@ -57,28 +72,31 @@ public class YamlPlayerCashImpl implements PlayerCash {
 
     @Override
     public PlayerCash addCash(String source, Type type, long cash) {
-        if(cash <= 0) return this;
+        if (cash <= 0) return this;
         this.cash += cash;
         changed = true;
         writeLog(Type.ADD, source, cash);
         return this;
     }
+
     @Override
     public PlayerCash subCash(String source, Type type, long cash) {
         long temp = this.cash - cash;
-        if(temp < 0) temp = 0;
-        if(this.cash == temp) return this;
+        if (temp < 0) temp = 0;
+        if (this.cash == temp) return this;
         this.cash = temp;
         changed = true;
         writeLog(Type.SUB, source, cash);
         return this;
     }
 
-    public void save() { save(false); }
+    public void save() {
+        save(false);
+    }
 
     @Override
     public PlayerCash save(boolean async) {
-        if(async) AsyncExecutors.run(()->{
+        if (async) AsyncExecutors.run(() -> {
             changed = false;
             JsonUtil.toJsonFile(getSaveFile(), this);
         });
@@ -99,15 +117,17 @@ public class YamlPlayerCashImpl implements PlayerCash {
                 try (BufferedWriter br = new BufferedWriter(new FileWriter(logFile, true))) {
                     br.append("uniqueId: [").append(String.valueOf(uniqueId)).append("] 타입: [").append(type.getLogName()).append("] 상대: [").append(source).append("] 금액: [").append(String.valueOf(amount)).append("] 잔고: [").append(String.valueOf(cash)).append("]\n");
                     br.flush();
-                } catch (IOException ignored) { }
+                } catch (IOException ignored) {
+                }
             });
-        }catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
     public void load() {
         File file = getSaveFile();
-        if(file.exists())
+        if (file.exists())
             this.cash = Objects.requireNonNull(JsonUtil.fromJsonFile(file, YamlPlayerCashImpl.class)).cash;
     }
 

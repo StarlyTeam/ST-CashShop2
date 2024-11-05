@@ -14,40 +14,45 @@ import java.util.stream.Collectors;
 public class SoundRepository {
 
     private static SoundRepository instance;
+
     public static SoundRepository getInstance() {
-        if(instance == null) instance = new SoundRepository();
+        if (instance == null) instance = new SoundRepository();
         return instance;
     }
-    private SoundRepository() {}
+
+    private SoundRepository() {
+    }
 
     private final Map<String, STSound> soundMap = new HashMap<>();
     private List<String> soundKeyList;
+
     public STSound getSound(String key) {
-        if(key == null || key.isEmpty()) return null;
-        if(soundMap.containsKey(key))
+        if (key == null || key.isEmpty()) return null;
+        if (soundMap.containsKey(key))
             return soundMap.get(key);
         return null;
     }
+
     private List<String> getSounds() {
         return new ArrayList<>(soundMap.keySet());
     }
 
     public String next(String soundPair) {
-        if(soundKeyList.isEmpty()) return null;
+        if (soundKeyList.isEmpty()) return null;
         int index;
-        if(soundPair == null) index = 0;
+        if (soundPair == null) index = 0;
         else index = soundKeyList.indexOf(soundPair) + 1;
 
-        if(index >= soundKeyList.size()) return null;
+        if (index >= soundKeyList.size()) return null;
         return soundKeyList.get(index);
     }
 
     public void initializing(CashShopMain plugin) {
-        if(!soundMap.isEmpty()) soundMap.clear();
+        if (!soundMap.isEmpty()) soundMap.clear();
         File dataFolder = plugin.getDataFolder();
         File soundFolder = new File(dataFolder, "sounds");
-        if(!soundFolder.exists()) {
-            if(soundFolder.mkdirs()) {
+        if (!soundFolder.exists()) {
+            if (soundFolder.mkdirs()) {
                 createTemplate(1, dataFolder, soundFolder, plugin);
                 createTemplate(2, dataFolder, soundFolder, plugin);
                 createTemplate(3, dataFolder, soundFolder, plugin);
@@ -57,8 +62,8 @@ public class SoundRepository {
         }
 
         File[] files = soundFolder.listFiles();
-        if(files == null) return;
-        Arrays.stream(files).filter((it)->it.getName().endsWith(".yml")).collect(Collectors.toList()).forEach((file)->{
+        if (files == null) return;
+        Arrays.stream(files).filter((it) -> it.getName().endsWith(".yml")).collect(Collectors.toList()).forEach((file) -> {
             try {
                 String key = file.getName();
                 key = key.substring(0, key.length() - 4);
@@ -66,7 +71,7 @@ public class SoundRepository {
                 String templateName = ChatColor.translateAlternateColorCodes('&', config.getString("name"));
                 soundMap.put(key, new STSoundImpl(templateName, config.getStringList("sound-function")));
             } catch (Exception ignored) {
-                plugin.getLogger().warning("[" + plugin.getName() + "]"  + file.getName() + " 파일의 설정이 올바르지 않습니다.");
+                plugin.getLogger().warning("[" + plugin.getName() + "]" + file.getName() + " 파일의 설정이 올바르지 않습니다.");
             }
         });
         soundKeyList = getSounds().stream().sorted().collect(Collectors.toList());
@@ -74,10 +79,10 @@ public class SoundRepository {
 
     private void createTemplate(int index, File dataFolder, File soundFolder, JavaPlugin plugin) {
         String prefix;
-        if(plugin.getServer().getVersion().contains("1.12")) prefix = "low_version_sounds/";
+        if (plugin.getServer().getVersion().contains("1.12")) prefix = "low_version_sounds/";
         else prefix = "high_version_sounds/";
-        plugin.saveResource(prefix+ "sound-template" + index + ".yml", true);
-        File source = new File(dataFolder, prefix+ "sound-template" + index + ".yml");
+        plugin.saveResource(prefix + "sound-template" + index + ".yml", true);
+        File source = new File(dataFolder, prefix + "sound-template" + index + ".yml");
         if (source.exists()) {
             File destination = new File(soundFolder, "sound-template" + index + ".yml");
             source.renameTo(destination);

@@ -12,7 +12,7 @@ public class MessageLoader {
     private static boolean loaded = false;
 
     public static void load(Config config) {
-        if(loaded) {
+        if (loaded) {
             CashShopMessageContextImpl.getInstance().reset();
             CashMessageContextImpl.getInstance().reset();
             loaded = false;
@@ -30,11 +30,11 @@ public class MessageLoader {
     }
 
     private static void loadMessageSection(ConfigurationSection section, MessageContext.Type type, boolean shop) {
-        if(section == null) return;
+        if (section == null) return;
         MessageContext context;
-        if(shop) context = CashShopMessageContextImpl.getInstance();
+        if (shop) context = CashShopMessageContextImpl.getInstance();
         else context = CashMessageContextImpl.getInstance();
-        section.getKeys(false).forEach((key)-> context.set(type, key, section.getString(key)));
+        section.getKeys(false).forEach((key) -> context.set(type, key, section.getString(key)));
     }
 
 

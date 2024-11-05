@@ -36,7 +36,7 @@ public abstract class STCashCommand implements CommandExecutor, TabCompleter {
         PluginCommand cmd = Objects.requireNonNull(plugin.getCommand(command));
         cmd.setExecutor(this);
         cmd.setTabCompleter(this);
-        if(shop) context = CashShopMessageContextImpl.getInstance();
+        if (shop) context = CashShopMessageContextImpl.getInstance();
         else context = CashMessageContextImpl.getInstance();
     }
 
@@ -50,14 +50,18 @@ public abstract class STCashCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
         String first;
         boolean korean = !label.equals(command);
-        try { first =  args[0]; } catch (ArrayIndexOutOfBoundsException exception) { first = ""; }
-        if(args.length <= 1) return StringUtil.copyPartialMatches(first, getSubCommands(korean)
+        try {
+            first = args[0];
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            first = "";
+        }
+        if (args.length <= 1) return StringUtil.copyPartialMatches(first, getSubCommands(korean)
                 .stream()
-                .filter((it)-> sender.isOp() || sender.hasPermission("starly.cashshop." + it))
+                .filter((it) -> sender.isOp() || sender.hasPermission("starly.cashshop." + it))
                 .collect(Collectors.toList()), new ArrayList<>()
         );
-        else if(isPlayerTab()) {
-            if(args.length == 2) return null;
+        else if (isPlayerTab()) {
+            if (args.length == 2) return null;
             else return Collections.emptyList();
         } else return Collections.emptyList();
     }
@@ -65,13 +69,15 @@ public abstract class STCashCommand implements CommandExecutor, TabCompleter {
     protected abstract boolean isPlayerTab();
 
     private void execute(CommandSender player, String label, boolean korean, String[] args) {
-        if(args.length == 0) printHelpLine(player, label, korean);
+        if (args.length == 0) printHelpLine(player, label, korean);
         else {
-            Optional<STSubCommand> optionalSTSubCommand = subCommands.stream().filter((it)->it.getKor().equals(args[0]) || it.getEng().equals(args[0])).findFirst();
-            if(optionalSTSubCommand.isPresent()) {
+            Optional<STSubCommand> optionalSTSubCommand = subCommands.stream().filter((it) -> it.getKor().equals(args[0]) || it.getEng().equals(args[0])).findFirst();
+            if (optionalSTSubCommand.isPresent()) {
                 STSubCommand sub = optionalSTSubCommand.get();
-                if(sub.hasNext() && args.length == 1 && isPlayerTab()) context.get(MessageContext.Type.ERROR, "noPlayerName").send(player);
-                else sub.execute(player, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length), label.equalsIgnoreCase("cashshop") || label.equals("캐시상점"));
+                if (sub.hasNext() && args.length == 1 && isPlayerTab())
+                    context.get(MessageContext.Type.ERROR, "noPlayerName").send(player);
+                else
+                    sub.execute(player, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length), label.equalsIgnoreCase("cashshop") || label.equals("캐시상점"));
             } else context.get(MessageContext.Type.ERROR, "wrongCommand").send(player);
         }
     }
@@ -79,27 +85,27 @@ public abstract class STCashCommand implements CommandExecutor, TabCompleter {
     protected void printHelpLine(CommandSender sender, String label, boolean korean) {
         reformattedHelpline(korean, label, subCommands
                 .stream()
-                .filter((it)-> sender.isOp() || sender.hasPermission("starly.cashshop."+it.getEng()))
+                .filter((it) -> sender.isOp() || sender.hasPermission("starly.cashshop." + it.getEng()))
                 .collect(Collectors.toList())
         ).forEach(sender::sendMessage);
     }
 
     protected List<String> reformattedHelpline(boolean korean, String label, List<STSubCommand> subCommandList) {
-        return subCommandList.stream().map((it)-> {
+        return subCommandList.stream().map((it) -> {
             StringBuilder builder = new StringBuilder("§6/");
             builder.append(label);
             builder.append(" ");
-            if(korean) {
+            if (korean) {
                 builder.append(it.getKor());
                 STSubCommand pointer = it;
-                while(pointer.hasNext()) {
+                while (pointer.hasNext()) {
                     pointer = pointer.getNextCommand();
                     builder.append(" ").append(pointer.getKor());
                 }
             } else {
                 builder.append(it.getEng());
                 STSubCommand pointer = it;
-                while(pointer.hasNext()) {
+                while (pointer.hasNext()) {
                     pointer = pointer.getNextCommand();
                     builder.append(" ").append(pointer.getEng());
                 }
@@ -109,10 +115,12 @@ public abstract class STCashCommand implements CommandExecutor, TabCompleter {
         }).collect(Collectors.toList());
     }
 
-    private List<String> getSubCommands(boolean korean) { return subCommands.stream().map((it) -> {
-        if(korean) return it.getKor();
-        else return it.getEng();
-    }).collect(Collectors.toList()); }
+    private List<String> getSubCommands(boolean korean) {
+        return subCommands.stream().map((it) -> {
+            if (korean) return it.getKor();
+            else return it.getEng();
+        }).collect(Collectors.toList());
+    }
 
     protected void registerSubCommand(STSubCommand... subCommands) {
         this.subCommands.addAll(Arrays.asList(subCommands));

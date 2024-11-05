@@ -10,6 +10,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -25,12 +26,13 @@ public class PlayerSkullManager {
 
     private static final Map<UUID, String> skinTagMap = new HashMap<>();
     private static boolean highVersion;
+
     static {
         highVersion = VersionController.getInstance().getVersion().isHighVersion();
     }
 
     private static String getSkinTag(UUID uniqueId) {
-        if(skinTagMap.containsKey(uniqueId))
+        if (skinTagMap.containsKey(uniqueId))
             return skinTagMap.get(uniqueId);
         return null;
     }
@@ -38,7 +40,7 @@ public class PlayerSkullManager {
     public static ItemStack getCustomSkull(String tempTag) throws UnSupportedVersionException {
         ItemStack baseItem;
         try {
-            if(highVersion) baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
+            if (highVersion) baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
             else baseItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
         } catch (Exception ignore) {
             return new ItemStack(Material.STONE);
@@ -56,14 +58,15 @@ public class PlayerSkullManager {
             profileField.setAccessible(true);
             profileField.set(headMeta, profile);
             baseItem.setItemMeta(headMeta);
-            return baseItem ;
+            return baseItem;
+        } catch (Exception e) {
+            throw new UnSupportedVersionException(CashShopMain.getPlugin().getServer().getVersion());
         }
-        catch (Exception e) { throw new UnSupportedVersionException(CashShopMain.getPlugin().getServer().getVersion()); }
     }
 
     public static ItemStack getPlayerSkull(UUID targetUniqueId) {
         String skinTag;
-        if(skinTagMap.containsKey(targetUniqueId)) skinTag = skinTagMap.get(targetUniqueId);
+        if (skinTagMap.containsKey(targetUniqueId)) skinTag = skinTagMap.get(targetUniqueId);
         else {
             try {
                 String contents = getURLContents("https://sessionserver.mojang.com/session/minecraft/profile/" + targetUniqueId);
@@ -79,12 +82,14 @@ public class PlayerSkullManager {
                 UUID hashAsId = new UUID(hash, hash);
                 skinTag = "{SkullOwner:{Id:\"" + hashAsId + "\", Properties:{textures:[{Value:\"" + value + "\"}]}}}";
                 skinTagMap.put(targetUniqueId, skinTag);
-            } catch (Exception e) { return new ItemStack(Material.STONE); }
+            } catch (Exception e) {
+                return new ItemStack(Material.STONE);
+            }
         }
         ItemStack baseItem;
 
         try {
-            if(highVersion) baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
+            if (highVersion) baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
             else baseItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
         } catch (Exception ignore) {
             return new ItemStack(Material.STONE);
@@ -96,15 +101,19 @@ public class PlayerSkullManager {
         try {
             URL url = new URL(stringUrl);
             StringBuilder builder = new StringBuilder();
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
                 br.lines().forEach(builder::append);
                 return builder.toString();
-            } catch (Exception e) { throw new UnSupportedVersionException(CashShopMain.getPlugin().getServer().getVersion()); }
-        } catch (Exception e) { throw new UnSupportedVersionException(CashShopMain.getPlugin().getServer().getVersion()); }
+            } catch (Exception e) {
+                throw new UnSupportedVersionException(CashShopMain.getPlugin().getServer().getVersion());
+            }
+        } catch (Exception e) {
+            throw new UnSupportedVersionException(CashShopMain.getPlugin().getServer().getVersion());
+        }
     }
 
-    private static byte[] launchBase64Method(byte[] byteArray, boolean highVersion) throws UnSupportedVersionException{
-        if(!highVersion) return Base64.encodeBase64(byteArray);
+    private static byte[] launchBase64Method(byte[] byteArray, boolean highVersion) throws UnSupportedVersionException {
+        if (!highVersion) return Base64.encodeBase64(byteArray);
         else {
             try {
                 Method method = Class.forName("org.bukkit.craftbukkit.libs.org.apache.commons.codec.binary.Base64").getMethod("encodeBase64", byte[].class);

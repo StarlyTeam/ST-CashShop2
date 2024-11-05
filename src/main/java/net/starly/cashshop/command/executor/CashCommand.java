@@ -15,7 +15,7 @@ public class CashCommand extends STCashCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if(args.length == 0 && sender instanceof Player)
+        if (args.length == 0 && sender instanceof Player)
             CashMessageContextImpl.getInstance()
                     .get(
                             MessageContext.Type.DEFAULT, "myInfo",
@@ -32,6 +32,10 @@ public class CashCommand extends STCashCommand {
         super(plugin, command, false);
         registerSubCommand(CashSubCommands.INFO, CashSubCommands.RESET, CashSubCommands.ADD, CashSubCommands.SUBTRACT, CashSubCommands.SET);
     }
-    @Override protected boolean isPlayerTab() { return true; }
+
+    @Override
+    protected boolean isPlayerTab() {
+        return true;
+    }
 
 }

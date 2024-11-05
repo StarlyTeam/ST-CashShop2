@@ -7,7 +7,9 @@ import net.starly.cashshop.database.DatabaseContext;
 import net.starly.cashshop.executor.AsyncExecutors;
 import org.bukkit.Bukkit;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -20,14 +22,20 @@ public class SqlPlayerCashImpl implements PlayerCash {
     private int id;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yy년 MM월 dd일 kk:mm:ss");
 
-    public SqlPlayerCashImpl(UUID uniqueID, int id) { this(uniqueID, 0, id); }
+    public SqlPlayerCashImpl(UUID uniqueID, int id) {
+        this(uniqueID, 0, id);
+    }
+
     public SqlPlayerCashImpl(UUID uniqueID, long cash, int id) {
         this.cash = cash;
         this.uniqueId = uniqueID;
         this.id = id;
     }
 
-    @Override public int getId() { return id; }
+    @Override
+    public int getId() {
+        return id;
+    }
 
     @Override
     public UUID getOwner() {
@@ -46,8 +54,8 @@ public class SqlPlayerCashImpl implements PlayerCash {
 
     @Override
     public PlayerCash setCash(String source, Type type, long cash) {
-        if(cash < 0) cash = 0;
-        if(cash == this.cash) return this;
+        if (cash < 0) cash = 0;
+        if (cash == this.cash) return this;
         this.cash = cash;
         changed = idChecker();
         writeLog(Type.SET, source, cash);
@@ -56,7 +64,7 @@ public class SqlPlayerCashImpl implements PlayerCash {
 
     @Override
     public PlayerCash addCash(String source, Type type, long cash) {
-        if(cash <= 0) return this;
+        if (cash <= 0) return this;
         this.cash += cash;
         changed = idChecker();
         writeLog(Type.ADD, source, cash);
@@ -66,8 +74,8 @@ public class SqlPlayerCashImpl implements PlayerCash {
     @Override
     public PlayerCash subCash(String source, Type type, long cash) {
         long temp = this.cash - cash;
-        if(temp < 0) temp = 0;
-        if(this.cash == temp) return this;
+        if (temp < 0) temp = 0;
+        if (this.cash == temp) return this;
         this.cash = temp;
         changed = idChecker();
         writeLog(Type.SUB, source, cash);
@@ -75,7 +83,7 @@ public class SqlPlayerCashImpl implements PlayerCash {
     }
 
     private boolean idChecker() {
-        if(id != -1) return true;
+        if (id != -1) return true;
         try (
                 Connection con = ConnectionPoolManager.getInternalPool().getConnection();
                 PreparedStatement stmt = con.prepareStatement(DatabaseContext.PLAYER_CASH_CREATE);
@@ -92,7 +100,7 @@ public class SqlPlayerCashImpl implements PlayerCash {
 
     @Override
     public void writeLog(Type type, String source, long amount) {
-        AsyncExecutors.run(()-> {
+        AsyncExecutors.run(() -> {
             try (
                     Connection con = ConnectionPoolManager.getInternalPool().getConnection();
                     PreparedStatement stmt = con.prepareStatement(DatabaseContext.PLAYER_CASH_LOG_INSERT);
@@ -112,7 +120,7 @@ public class SqlPlayerCashImpl implements PlayerCash {
 
     @Override
     public PlayerCash save(boolean async) {
-        if(!changed) return this;
+        if (!changed) return this;
         changed = false;
         try (
                 Connection con = ConnectionPoolManager.getInternalPool().getConnection();

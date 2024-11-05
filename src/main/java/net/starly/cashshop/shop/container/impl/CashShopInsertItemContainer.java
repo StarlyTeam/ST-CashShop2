@@ -33,6 +33,6 @@ public class CashShopInsertItemContainer extends STContainer {
 
     @Override
     protected void initializingInventory(Inventory inventory) {
-        shop.forEachIndexed((index, shopItem)-> inventory.setItem(index, shopItem == null ? null : shopItem.getOriginal()));
+        shop.forEachIndexed((index, shopItem) -> inventory.setItem(index, shopItem == null ? null : shopItem.getOriginal()));
     }
 }

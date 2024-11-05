@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.starly.cashshop.CashShopMain;
 import net.starly.cashshop.exception.UnSupportedVersionException;
 import org.bukkit.Server;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -20,9 +21,13 @@ public class VersionController {
         v1_19_R2("1.19", true),
         v1_20_R1("1.20", true);
 
-        @Getter private final String v;
-        @Getter private final String version = name();
-        @Getter private final boolean highVersion;
+        @Getter
+        private final String v;
+        @Getter
+        private final String version = name();
+        @Getter
+        private final boolean highVersion;
+
         Version(String v, boolean highVersion) {
             this.v = v;
             this.highVersion = highVersion;
@@ -30,6 +35,7 @@ public class VersionController {
     }
 
     private static VersionController instance;
+
     public static VersionController getInstance() {
         try {
             if (instance == null) instance = new VersionController(CashShopMain.getPlugin().getServer());
@@ -39,15 +45,16 @@ public class VersionController {
         }
     }
 
-    @Getter private final Version version;
+    @Getter
+    private final Version version;
 
     private VersionController(Server server) throws UnSupportedVersionException {
         version = checkVersions(server);
     }
 
     private Version checkVersions(Server server) throws UnSupportedVersionException {
-        Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it->server.getVersion().contains(it.v)).findFirst();
-        if(versionFilter.isPresent()) return versionFilter.get();
+        Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it -> server.getVersion().contains(it.v)).findFirst();
+        if (versionFilter.isPresent()) return versionFilter.get();
         else throw new UnSupportedVersionException(server.getVersion());
     }
 

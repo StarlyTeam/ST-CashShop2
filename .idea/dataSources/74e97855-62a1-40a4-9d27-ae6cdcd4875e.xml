@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="starlystore@localhost">
-  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.48">
+  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.53">
     <root id="1"/>
     <collation id="2" parent="1" name="armscii8_bin">
       <Charset>armscii8</Charset>
@@ -1069,20 +1069,20 @@
     </table>
     <column id="344" parent="342" name="id">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="345" parent="342" name="uniqueId">
-      <DasType>char(36)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>char(36)|0s</StoredType>
     </column>
     <column id="346" parent="342" name="balance">
-      <DasType>mediumtext|0s</DasType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>3</Position>
+      <StoredType>mediumtext|0s</StoredType>
     </column>
     <key id="347" parent="342" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
@@ -1091,38 +1091,38 @@
     </key>
     <column id="348" parent="343" name="id">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="349" parent="343" name="user_id">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="350" parent="343" name="type">
-      <DasType>char(12)|0s</DasType>
       <Position>3</Position>
+      <StoredType>char(12)|0s</StoredType>
     </column>
     <column id="351" parent="343" name="source">
-      <DasType>text|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>text|0s</StoredType>
     </column>
     <column id="352" parent="343" name="amount">
-      <DasType>mediumtext|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
+      <StoredType>mediumtext|0s</StoredType>
     </column>
     <column id="353" parent="343" name="balance">
-      <DasType>mediumtext|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
+      <StoredType>mediumtext|0s</StoredType>
     </column>
     <column id="354" parent="343" name="date">
-      <DasType>text|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
+      <StoredType>text|0s</StoredType>
     </column>
     <foreign-key id="355" parent="343" name="cash_log_ibfk_1">
       <ColNames>user_id</ColNames>

@@ -7,7 +7,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.StringUtil;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class CashShopCommand extends STCashCommand {
 
@@ -22,15 +26,20 @@ public class CashShopCommand extends STCashCommand {
                 CashShopSubCommands.RELOAD
         );
     }
-    @Override protected boolean isPlayerTab() { return false; }
+
+    @Override
+    protected boolean isPlayerTab() {
+        return false;
+    }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        if(args.length == 2) {
-            if(!(args[0].equals("목록") || args[0].equals("list")) && !(args[0].equals("리로드") || args[0].equals("reload")))
+        if (args.length == 2) {
+            if (!(args[0].equals("목록") || args[0].equals("list")) && !(args[0].equals("리로드") || args[0].equals("reload")))
                 return StringUtil.copyPartialMatches(args[1], CashShopMain.getPlugin().getCashShopRepository().getShopNames(), new ArrayList<>());
             else return Collections.emptyList();
-        } else if(args.length == 3 && args[0].equals("생성")) return StringUtil.copyPartialMatches(args[2], Arrays.asList("1", "2", "3", "4", "5", "6"), new ArrayList<>());
+        } else if (args.length == 3 && args[0].equals("생성"))
+            return StringUtil.copyPartialMatches(args[2], Arrays.asList("1", "2", "3", "4", "5", "6"), new ArrayList<>());
         return super.onTabComplete(sender, cmd, label, args);
     }
 

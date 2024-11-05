@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.Setter;
 import net.starly.cashshop.executor.AsyncExecutors;
 import net.starly.core.data.Config;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,18 +16,23 @@ public class ConnectionPoolManager {
 
     private static ConnectionPoolManager internalPool;
     private HikariDataSource dataSource;
-    @Setter private String host;
-    @Setter private String port;
-    @Setter private String database;
-    @Setter private String username;
-    @Setter private String password;
+    @Setter
+    private String host;
+    @Setter
+    private String port;
+    @Setter
+    private String database;
+    @Setter
+    private String username;
+    @Setter
+    private String password;
     private int minimumConnections;
     private int maximumConnections;
     private long connectionTimeout;
     private String testQuery;
 
     public static void initializingPoolManager(Config config) {
-        if(internalPool == null)
+        if (internalPool == null)
             internalPool = new ConnectionPoolManager(
                     config.getString("database.host"),
                     config.getString("database.port"),
@@ -81,33 +87,38 @@ public class ConnectionPoolManager {
     }
 
     public void close(Connection connection, PreparedStatement statement, ResultSet result) {
-        if(connection != null) try {
+        if (connection != null) try {
             connection.close();
-        } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {
+        }
 
-        if(statement != null) try {
+        if (statement != null) try {
             statement.close();
-        } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {
+        }
 
-        if(result != null) try {
+        if (result != null) try {
             result.close();
-        } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {
+        }
     }
 
     public void closePool() {
-        if(dataSource != null)
+        if (dataSource != null)
             dataSource.close();
         internalPool = null;
     }
 
     public void getSQLThread(Consumer<Connection> consumer) {
-        AsyncExecutors.run(()-> {
+        AsyncExecutors.run(() -> {
             try {
                 Connection connection = getConnection();
                 consumer.accept(connection);
-                if(connection != null && !connection.isClosed())
+                if (connection != null && !connection.isClosed())
                     connection.close();
-            } catch (SQLException e) { e.printStackTrace(); }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         });
     }
 

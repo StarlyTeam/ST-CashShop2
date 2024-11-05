@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class CashExpansion extends PlaceholderExpansion {
 
     private final CashShopMain plugin;
+
     public CashExpansion(CashShopMain plugin) {
         this.plugin = plugin;
     }
@@ -31,18 +32,18 @@ public class CashExpansion extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String params) {
-        if(player == null) return null;
-        if(params.equalsIgnoreCase("fscash")) {
+        if (player == null) return null;
+        if (params.equalsIgnoreCase("fscash")) {
             PlayerCash cash = plugin.getPlayerCashRepository().getPlayerCash(player.getUniqueId());
-            if(cash == null) return null;
+            if (cash == null) return null;
             return FormattingUtil.formattingCash(cash.getCash());
-        } else if(params.equalsIgnoreCase("cash")) {
+        } else if (params.equalsIgnoreCase("cash")) {
             PlayerCash cash = plugin.getPlayerCashRepository().getPlayerCash(player.getUniqueId());
-            if(cash == null) return null;
+            if (cash == null) return null;
             return cash.getCash() + "";
-        } else if(params.equalsIgnoreCase("fcash")) {
+        } else if (params.equalsIgnoreCase("fcash")) {
             PlayerCash cash = plugin.getPlayerCashRepository().getPlayerCash(player.getUniqueId());
-            if(cash == null) return null;
+            if (cash == null) return null;
             return FormattingUtil.formattingLong(cash.getCash());
         } else return null;
     }

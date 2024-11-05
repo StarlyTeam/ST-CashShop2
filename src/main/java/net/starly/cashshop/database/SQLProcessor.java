@@ -26,8 +26,8 @@ public class SQLProcessor {
 
     public SQLProcessor addListener(GenericFutureListener<SQLResult> listener) {
         lock.writeLock().lock();
-        if(listeners == null)
-           listeners = new HashSet<>();
+        if (listeners == null)
+            listeners = new HashSet<>();
 
         listeners.add(listener);
         lock.writeLock().unlock();
@@ -41,7 +41,7 @@ public class SQLProcessor {
 
     public SQLProcessor prepare(String query, Consumer<PreparedStatementWrapper> wrapperConsumer) {
         lock.writeLock().lock();
-        if(stmts == null)
+        if (stmts == null)
             stmts = new HashSet<>();
 
         stmts.add(new Pair<>(query, wrapperConsumer));
@@ -72,39 +72,62 @@ public class SQLProcessor {
         listeners.forEach((l) -> {
             try {
                 l.operationComplete(new SQLResult() {
-                    @Override public boolean isSuccess() { return ex == null; }
+                    @Override
+                    public boolean isSuccess() {
+                        return ex == null;
+                    }
 
-                    @Override public Exception getCause() { return ex; }
+                    @Override
+                    public Exception getCause() {
+                        return ex;
+                    }
 
-                    @Override public boolean cancel(boolean mayInterruptIfRunning) { throw new UnsupportedOperationException(); }
+                    @Override
+                    public boolean cancel(boolean mayInterruptIfRunning) {
+                        throw new UnsupportedOperationException();
+                    }
 
-                    @Override public boolean isCancelled() { return false; }
+                    @Override
+                    public boolean isCancelled() {
+                        return false;
+                    }
 
-                    @Override public boolean isDone() { return true; }
+                    @Override
+                    public boolean isDone() {
+                        return true;
+                    }
 
-                    @Override public Void get() throws InterruptedException, ExecutionException { return null; }
+                    @Override
+                    public Void get() throws InterruptedException, ExecutionException {
+                        return null;
+                    }
 
-                    @Override public Void get(long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException { return null; }
+                    @Override
+                    public Void get(long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+                        return null;
+                    }
                 });
 
-            } catch (Exception ex2) { ex2.printStackTrace(); }
+            } catch (Exception ex2) {
+                ex2.printStackTrace();
+            }
         });
     }
 
     @SuppressWarnings("all")
     private synchronized void process() {
-        if(service == null)
+        if (service == null)
             service = AsyncExecutors.getService();
 
-        future = service.submit(new ExceptionHandle(()-> {
+        future = service.submit(new ExceptionHandle(() -> {
             try {
                 lock.readLock().lock();
-                if(connection == null)
+                if (connection == null)
                     connection = ConnectionPoolManager.getInternalPool().getConnection();
 
                 Iterator iter = stmts.iterator();
 
-                while(iter.hasNext()) {
+                while (iter.hasNext()) {
                     Pair<String, Consumer<PreparedStatementWrapper>> stmt = (Pair<String, Consumer<PreparedStatementWrapper>>) iter.next();
                     PreparedStatement statement = connection.prepareStatement(stmt.getFirst());
                     stmt.getSecond().accept(new PreparedStatementWrapper(statement));
@@ -112,17 +135,19 @@ public class SQLProcessor {
                 }
 
                 onFinished(null);
-                if(closeAfterProcess)
+                if (closeAfterProcess)
                     connection.close();
 
                 lock.readLock().unlock();
-            } catch (Exception e) { onFinished(e); }
+            } catch (Exception e) {
+                onFinished(e);
+            }
         }));
 
     }
 
     public SQLProcessor start() {
-        if(future != null)
+        if (future != null)
             throw new UnsupportedOperationException("이미 실행중인 SQL Processor 입니다.");
         else {
             process();

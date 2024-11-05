@@ -36,7 +36,7 @@ public class SQLPlayerCashRepositoryImpl implements PlayerCashRepository {
         ) {
             stmt.setString(1, uniqueId.toString());
             ResultSet set = stmt.executeQuery();
-            if(set.next())
+            if (set.next())
                 return new SqlPlayerCashImpl(uniqueId, set.getLong("balance"), set.getInt("id"));
             return null;
         } catch (SQLException e) {
@@ -53,7 +53,7 @@ public class SQLPlayerCashRepositoryImpl implements PlayerCashRepository {
         ) {
             stmt.setString(1, uniqueId.toString());
             ResultSet set = stmt.executeQuery();
-            if(set.next())
+            if (set.next())
                 return new SqlPlayerCashImpl(uniqueId, set.getLong("balance"), set.getInt("id"));
             return new SqlPlayerCashImpl(uniqueId, -1);
         } catch (SQLException e) {
@@ -62,7 +62,16 @@ public class SQLPlayerCashRepositoryImpl implements PlayerCashRepository {
         return null;
     }
 
-    @Override public PlayerCash unregisterCash(UUID uniqueId) { return null; }
-    @Override public void registerPlayerCash(PlayerCash playerCash) { }
-    @Override public void close() {}
+    @Override
+    public PlayerCash unregisterCash(UUID uniqueId) {
+        return null;
+    }
+
+    @Override
+    public void registerPlayerCash(PlayerCash playerCash) {
+    }
+
+    @Override
+    public void close() {
+    }
 }

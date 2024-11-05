@@ -1,15 +1,15 @@
 plugins {
-    id 'java'
-    id 'java-library'
+    id "java"
+    id "java-library"
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-group 'net.starly.cashshop'
-version '1.0.7'
+group "net.starly.cashshop"
+version "1.0.7"
 
 repositories {
     mavenCentral()
-    maven { url = "http://starly.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
+    maven { url = "https://hub.spigotmc.org/nexus/repository/public" }
     maven { url = "https://repo.skriptlang.org/releases" }
     maven { url = "https://repo.extendedclip.com/content/repositories/placeholderapi" }
 }
@@ -21,21 +21,21 @@ dependencies {
 
     api "org.apache.commons:commons-lang3:3.0"
     api "com.google.code.gson:gson:2.10.1"
-    api group: "com.zaxxer", name: "HikariCP", version: "3.4.5"
+    api "com.zaxxer:HikariCP:3.4.5"
 
-    compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
+    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
     compileOnly files("api/authlib.jar")
 
-    compileOnly "net.starly.core:ST-Core:1.8.1"
+    compileOnly files("api/ST-Core.jar")
     compileOnly "com.github.SkriptLang:Skript:2.6.3"
-    compileOnly "me.clip:placeholderapi:2.11.1"
+    compileOnly "me.clip:placeholderapi:2.11.6"
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+    options.encoding = "UTF-8"
 }
 
 shadowJar {
-    archiveFileName = 'ST-CashShop.jar'
-    destinationDirectory = file('C:\\Users\\PC\\스탈리\\개발서버\\[ 1.20.1 ]\\plugins')
+    archiveFileName = "ST-CashShop.jar"
+    destinationDirectory = file("C:\\Users\\PC\\스탈리\\개발서버\\[ 1.20.1 ]\\plugins")
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.starly.cashshop.shop.item.STCashShopItem;
 import net.starly.cashshop.util.FormattingUtil;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,14 +29,14 @@ public class ItemSetting {
         boolean isSale = cashShopItem.getSale() > .0;
         boolean isLimited = cashShopItem.getAmount() >= 0;
         List<String> target;
-        if(!isSale && !isLimited) target = defaultLore;
-        else if(isSale && isLimited) target = limitedSaleLore;
-        else if(isSale) target = saleLore;
+        if (!isSale && !isLimited) target = defaultLore;
+        else if (isSale && isLimited) target = limitedSaleLore;
+        else if (isSale) target = saleLore;
         else target = limitedLore;
 
         return target
                 .stream()
-                .map((it)->it
+                .map((it) -> it
                         .replace("{cash}", FormattingUtil.formattingCash(cashShopItem.getCost()))
                         .replace("{original}", FormattingUtil.formattingCash(cashShopItem.getOriginalCost()))
                         .replace("{click-type}", single.text)
@@ -56,7 +57,7 @@ public class ItemSetting {
         private int amount;
         private String text;
 
-        public enum Type { LEFT, RIGHT, ALL }
+        public enum Type {LEFT, RIGHT, ALL}
     }
 
 }

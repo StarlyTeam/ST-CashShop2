@@ -8,6 +8,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,12 +18,14 @@ public class Replacer {
 
     private final Set<Function<String, String>> functions;
 
-    private Replacer(Set<Function<String, String>> functions) { this.functions = functions; }
+    private Replacer(Set<Function<String, String>> functions) {
+        this.functions = functions;
+    }
 
     public Function<String, String> getFunction() {
-        return (it)-> {
+        return (it) -> {
             String result = it;
-            for(Function<String, String> func: functions) {
+            for (Function<String, String> func : functions) {
                 result = func.apply(result);
             }
             return result;
@@ -35,44 +38,46 @@ public class Replacer {
         private final DecimalFormat format = new DecimalFormat("#,###");
 
         public ReplacerBuilder append(Player player) {
-            functions.add((it)->it.replace("{player}", player.getName()));
+            functions.add((it) -> it.replace("{player}", player.getName()));
             return this;
         }
 
         public ReplacerBuilder append(CommandSender sender) {
-            if(sender instanceof ConsoleCommandSender) return append((ConsoleCommandSender) sender);
+            if (sender instanceof ConsoleCommandSender) return append((ConsoleCommandSender) sender);
             else return append((Player) sender);
         }
 
         public ReplacerBuilder append(STCashShop shop) {
-            functions.add((it)->it.replace("{shop}", shop.getName()));
+            functions.add((it) -> it.replace("{shop}", shop.getName()));
             return this;
         }
 
         public ReplacerBuilder append(ConsoleCommandSender console) {
-            functions.add((it)->it.replace("{player}", "콘솔"));
+            functions.add((it) -> it.replace("{player}", "콘솔"));
             return this;
         }
 
         public ReplacerBuilder append(OfflinePlayer player) {
-            functions.add((it)->it.replace("{player}", player.getName()));
+            functions.add((it) -> it.replace("{player}", player.getName()));
             return this;
         }
 
         public ReplacerBuilder appendSystemMessage(String systemMessage) {
-            functions.add((it)->it.replace("{system}", systemMessage));
+            functions.add((it) -> it.replace("{system}", systemMessage));
             return this;
         }
 
         public ReplacerBuilder append(Long cash, boolean shop) {
             MessageContext context;
-            if(shop) context = CashShopMessageContextImpl.getInstance();
+            if (shop) context = CashShopMessageContextImpl.getInstance();
             else context = CashMessageContextImpl.getInstance();
-            functions.add((it)->it.replace("{cash}", format.format(cash)+ context.getOnlyString(MessageContext.Type.DEFAULT, "suffix")) );
+            functions.add((it) -> it.replace("{cash}", format.format(cash) + context.getOnlyString(MessageContext.Type.DEFAULT, "suffix")));
             return this;
         }
 
-        public Replacer build() { return new Replacer(functions); }
+        public Replacer build() {
+            return new Replacer(functions);
+        }
     }
 
 }

@@ -3,7 +3,9 @@ package net.starly.cashshop.database;
 public class ExceptionHandle implements Runnable {
     private final Runnable runnable;
 
-    public ExceptionHandle(Runnable r) { runnable = r; }
+    public ExceptionHandle(Runnable r) {
+        runnable = r;
+    }
 
     @Override
     public void run() {

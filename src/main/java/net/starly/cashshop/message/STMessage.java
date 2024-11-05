@@ -19,22 +19,22 @@ public class STMessage {
     }
 
     public void send(CommandSender sender) {
-        if(message.isEmpty()) return;
+        if (message.isEmpty()) return;
         sender.sendMessage(prefix + message);
     }
 
     public void send(Player player) {
-        if(message.isEmpty()) return;
+        if (message.isEmpty()) return;
         player.sendMessage(prefix + message);
     }
 
     public void send(ConsoleCommandSender console) {
-        if(message.isEmpty()) return;
+        if (message.isEmpty()) return;
         console.sendMessage(prefix + message);
     }
 
     public void broadcast() {
-        if(message.isEmpty()) return;
+        if (message.isEmpty()) return;
         CashShopMain.getPlugin().getServer().broadcastMessage(message);
     }
 

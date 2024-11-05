@@ -19,21 +19,29 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class STCashShopItem {
 
-    @Getter private final ItemStack original;
+    @Getter
+    private final ItemStack original;
     private double sale = .0;
-    @Getter private int amount = -1;
-    @Getter private int nowAmount = -1;
+    @Getter
+    private int amount = -1;
+    @Getter
+    private int nowAmount = -1;
+
     public void setNowAmount(int nowAmount) {
         this.nowAmount = nowAmount;
         isChanged = true;
     }
-    @Getter private long originalCost = -1;
 
-    @Getter@Setter private boolean isChanged = false;
+    @Getter
+    private long originalCost = -1;
+
+    @Getter
+    @Setter
+    private boolean isChanged = false;
 
     public void setOriginalCost(long cost) {
-        if(cost < 0) cost = -1;
-        if(cost == originalCost) return;
+        if (cost < 0) cost = -1;
+        if (cost == originalCost) return;
         isChanged = true;
         originalCost = cost;
     }
@@ -63,27 +71,33 @@ public class STCashShopItem {
         ItemSetting setting = GlobalShopSettings.getInstance().getItemSetting();
         ItemStack result = original.clone();
         ItemMeta meta = result.getItemMeta();
-        if(setting.isHideNoneValueItemInfo()) {
-            if(originalCost < 0) {
+        if (setting.isHideNoneValueItemInfo()) {
+            if (originalCost < 0) {
                 meta.setDisplayName("§f");
                 meta.setLore(null);
                 result.setItemMeta(meta);
                 return result;
             }
         }
-        if(setting.isHideAttribute()) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        if(setting.isHideUnbreakable()) meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-        if(setting.isHideEnchants()) meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (setting.isHideAttribute()) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        if (setting.isHideUnbreakable()) meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        if (setting.isHideEnchants()) meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(setting.convertLore(this));
         result.setItemMeta(meta);
         return result;
     }
 
-    public boolean isSale() { return sale > 0; }
-    public boolean isLimited() { return amount >= 0; }
+    public boolean isSale() {
+        return sale > 0;
+    }
+
+    public boolean isLimited() {
+        return amount >= 0;
+    }
+
     public boolean setAmount(int amount) {
-        if(amount < 0) amount = -1;
-        if(this.amount == amount) return false;
+        if (amount < 0) amount = -1;
+        if (this.amount == amount) return false;
         nowAmount = amount;
         this.amount = amount;
         isChanged = true;
@@ -91,8 +105,8 @@ public class STCashShopItem {
     }
 
     public boolean setSale(double sale) {
-        if(sale < 0 || sale > 100) return false;
-        if(sale == getSale()) return false;
+        if (sale < 0 || sale > 100) return false;
+        if (sale == getSale()) return false;
         this.sale = sale / 100.0;
         isChanged = true;
         return true;
@@ -108,9 +122,9 @@ public class STCashShopItem {
 
     public long getCost() {
         long result = originalCost;
-        if(result < 0) return result;
-        if(sale > 0) {
-            if(sale >= 0.9999) return 0;
+        if (result < 0) return result;
+        if (sale > 0) {
+            if (sale >= 0.9999) return 0;
             BigDecimal cost = new BigDecimal(originalCost);
             BigDecimal discount = cost.multiply(new BigDecimal(sale));
             BigDecimal res = cost.subtract(discount).setScale(0, RoundingMode.HALF_UP);

@@ -3,7 +3,6 @@ package net.starly.cashshop.shop.container.button;
 import lombok.Getter;
 import net.starly.cashshop.shop.container.STContainer;
 import net.starly.cashshop.shop.container.wrapper.ButtonClickEventWrapper;
-import net.starly.cashshop.shop.container.wrapper.InventoryClickEventWrapper;
 import net.starly.cashshop.util.PlayerSkullManager;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -21,8 +20,10 @@ import java.util.stream.Collectors;
 
 public class STButton {
 
-    @Getter private boolean isGlow;
-    @Getter private boolean isCleanable;
+    @Getter
+    private boolean isGlow;
+    @Getter
+    private boolean isCleanable;
     private BiConsumer<ButtonClickEventWrapper, STContainer> function;
     private ItemStack itemStack;
     private String displayName;
@@ -37,26 +38,37 @@ public class STButton {
 
     private STButton apply() {
         ItemMeta meta = itemStack.getItemMeta();
-        if(displayName != null) meta.setDisplayName(displayName);
-        if(lore != null) meta.setLore(lore);
-        if(isGlow) meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (displayName != null) meta.setDisplayName(displayName);
+        if (lore != null) meta.setLore(lore);
+        if (isGlow) meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemStack.setItemMeta(meta);
-        if(isGlow) itemStack.addUnsafeEnchantment(Enchantment.LURE, 1);
+        if (isGlow) itemStack.addUnsafeEnchantment(Enchantment.LURE, 1);
         return this;
     }
 
-    public ItemStack getOriginalItemStack() { return  itemStack; }
-    public ItemStack getItemStack() {return itemStack.clone(); }
-    public String getDisplayName() { return displayName == null ? "" : displayName; }
-    public List<String> getLore() { return lore == null ? Collections.emptyList() : lore; }
+    public ItemStack getOriginalItemStack() {
+        return itemStack;
+    }
+
+    public ItemStack getItemStack() {
+        return itemStack.clone();
+    }
+
+    public String getDisplayName() {
+        return displayName == null ? "" : displayName;
+    }
+
+    public List<String> getLore() {
+        return lore == null ? Collections.emptyList() : lore;
+    }
 
     public void setSlot(STContainer container, int... slots) {
-        for(int slot: slots)
+        for (int slot : slots)
             container.registerButton(slot, this);
     }
 
     public void execute(STContainer container, ButtonClickEventWrapper wrapper) {
-        if(function == null) return;
+        if (function == null) return;
         function.accept(wrapper, container);
     }
 
@@ -71,20 +83,25 @@ public class STButton {
         public STButtonBuilder(ItemStack itemStack) {
             this();
             button.itemStack = itemStack.clone();
-            if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) button.lore = itemStack.getItemMeta().getLore();
+            if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore())
+                button.lore = itemStack.getItemMeta().getLore();
         }
+
         public STButtonBuilder(Material material) {
             this();
             button.itemStack = new ItemStack(material);
         }
+
         public STButtonBuilder(Material material, int amount) {
             this();
             button.itemStack = new ItemStack(material, amount);
         }
+
         public STButtonBuilder(Player player) {
             this();
             button.itemStack = PlayerSkullManager.getPlayerSkull(player.getUniqueId());
         }
+
         public STButtonBuilder(UUID uniqueId) {
             this();
             button.itemStack = PlayerSkullManager.getPlayerSkull(uniqueId);

@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.starly.cashshop.CashShopMain;
+import net.starly.cashshop.executor.AsyncExecutors;
 import net.starly.cashshop.shop.STCashShop;
 import net.starly.cashshop.shop.container.STContainer;
 import net.starly.cashshop.shop.item.STCashShopItem;
 import net.starly.cashshop.shop.settings.GlobalShopSettings;
 import net.starly.cashshop.util.ShopByteArrayUtility;
-import net.starly.cashshop.executor.AsyncExecutors;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -30,10 +30,18 @@ public class CashShopImpl implements STCashShop {
     private String name;
     private int line;
     private boolean close;
-    @Getter@Setter private String soundKey;
-    @Getter@Setter private String closeSoundKey;
-    @Getter@Setter private String buySoundKey;
-    @Getter@Setter private String failSoundKey;
+    @Getter
+    @Setter
+    private String soundKey;
+    @Getter
+    @Setter
+    private String closeSoundKey;
+    @Getter
+    @Setter
+    private String buySoundKey;
+    @Getter
+    @Setter
+    private String failSoundKey;
     private STCashShopItem[] contents;
 
     @Override
@@ -79,23 +87,23 @@ public class CashShopImpl implements STCashShop {
     @Override
     public void registerContents(ItemStack[] items) {
         AtomicBoolean isChanged = new AtomicBoolean(false);
-        forEachIndexed((index, shopItem)-> {
+        forEachIndexed((index, shopItem) -> {
             ItemStack item = items[index];
-            if(shopItem == null && (item == null || item.getType().equals(Material.AIR))) return;
-            if(shopItem != null) {
-                 if(shopItem.getOriginal().isSimilar(item)) {
-                     if(shopItem.getOriginal().getAmount() != item.getAmount()) {
-                         shopItem.getOriginal().setAmount(item.getAmount());
-                         isChanged.set(true);
-                     }
-                     return;
-                 }
+            if (shopItem == null && (item == null || item.getType().equals(Material.AIR))) return;
+            if (shopItem != null) {
+                if (shopItem.getOriginal().isSimilar(item)) {
+                    if (shopItem.getOriginal().getAmount() != item.getAmount()) {
+                        shopItem.getOriginal().setAmount(item.getAmount());
+                        isChanged.set(true);
+                    }
+                    return;
+                }
             }
-            if(item == null || item.getType().equals(Material.AIR)) contents[index] = null;
+            if (item == null || item.getType().equals(Material.AIR)) contents[index] = null;
             else contents[index] = new STCashShopItem(item);
             isChanged.set(true);
         });
-        if(isChanged.get()) save(true);
+        if (isChanged.get()) save(true);
     }
 
     @Override
@@ -105,19 +113,24 @@ public class CashShopImpl implements STCashShop {
 
     @Override
     public CashShopImpl save(boolean async) {
-        if(async) AsyncExecutors.run(this::save);
+        if (async) AsyncExecutors.run(this::save);
         else save();
         return this;
     }
 
-    @Override public void forEach(Consumer<STCashShopItem> function) { Arrays.stream(contents).forEach(function); }
-    @Override public void forEachIndexed(BiConsumer<Integer, STCashShopItem> function) {
-        for(int i = 0; i < contents.length; i++) function.accept(i, contents[i]);
+    @Override
+    public void forEach(Consumer<STCashShopItem> function) {
+        Arrays.stream(contents).forEach(function);
+    }
+
+    @Override
+    public void forEachIndexed(BiConsumer<Integer, STCashShopItem> function) {
+        for (int i = 0; i < contents.length; i++) function.accept(i, contents[i]);
     }
 
     @SuppressWarnings("all")
     private void save() {
-        File file = new File(CashShopMain.getPlugin().getDataFolder(), "shops/" + ChatColor.stripColor(name)+".bin");
+        File file = new File(CashShopMain.getPlugin().getDataFolder(), "shops/" + ChatColor.stripColor(name) + ".bin");
         try {
             if (!file.exists()) file.createNewFile();
             try (FileOutputStream stream = new FileOutputStream(file)) {
